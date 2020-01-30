@@ -1,9 +1,13 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('login.ejs');
-});
-
-module.exports = router;
+module.exports = (pool) => {
+  //test database
+  router.get('/', (req, res, next) => {
+    let query = ' SELECT * FROM users'
+    pool.query(query, (err, result)=>{
+      res.json(result.rows)
+    })
+  });
+  return router;
+}

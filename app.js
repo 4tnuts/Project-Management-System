@@ -1,13 +1,24 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const createError = require('http-errors');
+const express = require('express');
+const logger = require('morgan');
+const path = require('path');
+const { Pool } = require('pg');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const pool = new Pool({
+  user : 'postgres',
+  host : 'localhost',
+  database : 'pms',
+  password : 'lala123',
+  port : 5432
+})
 
-var app = express();
+console.log('Connected to the database');
+
+const indexRouter = require('./routes/index')(pool);
+const usersRouter = require('./routes/users');
+
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
