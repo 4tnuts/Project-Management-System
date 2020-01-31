@@ -7,7 +7,7 @@ router.use(bodyParser.json());
 
 module.exports= (pool) => {
     router.get('/', (req, res, next) => {
-        res.send('ini halaman profile');
+        res.render('profile/dashboard');
     });
     return router;
 }
