@@ -1,13 +1,22 @@
-.form-login {
+.form {
     -webkit-box-shadow: 0px 4px 18px 3px rgba(159, 227, 252, 0.4);
     -moz-box-shadow: 0px 4px 18px 3px rgba(159, 227, 252, 0.4);
     box-shadow: 0px 4px 18px 3px rgba(159, 227, 252, 0.4);
 }
 
-.wave{
-    position:fixed;
-    bottom:0px;
-    left:50%;
+.wave-bottom {
+    position: fixed;
+    bottom: 0px;
+    left: 50%;
+    display: block;
+    z-index: -9999;
+    left: 0;
+}
+
+.wave-top {
+    position: fixed;
+    top: 0px;
+    left: 50%;
     display: block;
     z-index: -9999;
     left: 0;

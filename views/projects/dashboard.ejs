@@ -1,38 +1,40 @@
 <%- include('../partials/header'); %>
+
 <body>
   <%- include('../partials/navbar'); %>
-  <img src="../../images/wave.svg" class="wave" alt="">
-  <h1 class="display-5 m-5 text-center font-weight-bolder text-responsive">Projects</h1>
-  <div class=" container bg-light shadow p-3 mb-5">
-    <h1 class="display-5 m-4 ">Filters</h1>
+  <h1 class="display-5 m-4 text-center font-weight-bolder">Projects</h1>
+  <div class=" container bg-light form p-3 mb-5">
+    <h1 class="display-5 m-2 ">Filters</h1>
     <hr>
     <form action="/" method="post">
       <label for="" class="font-weight-bold">ID</label>
       <div class="input-group mb-3">
         <div class="input-group-prepend">
           <div class="input-group-text">
-            <input type="checkbox" aria-label="Checkbox for following text input">
+            <input type="checkbox" name="cfid" value="true">
           </div>
         </div>
-        <input type="text" class="form-control" aria-label="Text input with checkbox">
+        <input type="text" class="form-control" name="id" value="" placeholder="ID">
       </div>
       <label for="" class="font-weight-bold">Name</label>
       <div class="input-group mb-3">
         <div class="input-group-prepend">
           <div class="input-group-text">
-            <input type="checkbox" aria-label="Checkbox for following text input">
+            <input type="checkbox" name="cfname" value="">
           </div>
         </div>
-        <input type="text" class="form-control" aria-label="Text input with checkbox">
+        <input type="text" class="form-control" name="name" value="" placeholder="Project Name">
       </div>
       <label for="" class="font-weight-bold">Member</label>
       <div class="input-group mb-3">
         <div class="input-group-prepend">
           <div class="input-group-text">
-            <input type="checkbox" aria-label="Checkbox for following text input">
+            <input type="checkbox" name="cfmember" value="">
           </div>
         </div>
-        <input type="text" class="form-control" aria-label="Text input with checkbox">
+        <select class="form-control" name="" id="">
+          <option value="">Choose Members..</option>
+        </select>
       </div>
       <button type="submit" class="btn btn-outline-primary font-weight-bold">Search</button>
     </form>
@@ -40,15 +42,15 @@
     <form action="/" method="post">
       <p class="font-weight-bold">Options</p>
       <div class="input-group mb-3 text-center">
-       <div class="input-group-prepend">
+        <div class="input-group-prepend">
           <div class="input-group-text bg-white">
-            <input type="checkbox" aria-label="Checkbox for following text input">&nbsp<b>ID</b>
+            <input type="checkbox" name="cpid" value="" checked>&nbsp<b>ID</b>
           </div>
           <div class="input-group-text bg-white">
-            <input type="checkbox" aria-label="Checkbox for following text input">&nbsp<b>Name</b>
+            <input type="checkbox" name="cpname" value="" checked>&nbsp<b>Name</b>
           </div>
           <div class="input-group-text bg-white rounded-right">
-            <input type="checkbox" aria-label="Checkbox for following text input">&nbsp<b>Members</b>
+            <input type="checkbox" name="cpmember" value="">&nbsp<b>Members</b>
           </div><br>
         </div>
       </div>
@@ -69,7 +71,8 @@
           <th scope="row"> <a href="">1</a></th>
           <td>Mark</td>
           <td>Otto</td>
-          <td><button class="btn btn-outline-success">Edit</button><button class="btn btn-outline-danger">Delete</button></td>
+          <td><a href=''class="btn btn-outline-success">Edit</a>&nbsp<a
+              href=''class="btn btn-outline-danger">Delete</a></td>
         </tr>
       </tbody>
     </table>

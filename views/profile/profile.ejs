@@ -1,0 +1,44 @@
+<%- include('../partials/header') %>
+<body>
+    <%- include('../partials/navbar.ejs') %>
+    <br>
+    <h1 class="display-5 text-center font-weight-bolder" style="margin-bottom: 20px">Your Profile</h1>
+    <div class=" container bg-light p-3 mb-5 form">
+        <h1 class="display-5 m-4 ">Profile</h1>
+        <hr>
+        <form action="/profiles/" method="post">
+            <label for="" class="font-weight-bold">E-mail</label>
+            <div class="input-group mb-3">
+                <input type="email" class="form-control" name="email" placeholder="E-mail" value="<%= userData.email %>" readonly>
+            </div>
+            <label for="" class="font-weight-bold">Password</label>
+            <div class="input-group mb-3">
+                <input type="password" class="form-control" name="password" placeholder="Password" value="<%= userData.password %>">
+            </div>
+            <p class="font-weight-bold">Position</p>
+            <div class="input-group mb-3 text-center">
+                <div class="input-group-prepend">
+                    <div class="form-check input-group-text bg-white">
+                        <input type="radio" name="position" value='manager' <%= userData.position == 'manager' ? 'checked' : '' %>>&nbsp<b>Manager</b>
+                    </div>
+                    <div class="form-check input-group-text bg-white">
+                        <input type="radio" name="position" value='SD' <%= userData.position == 'SD' ? 'checked' : '' %>>&nbsp<b>Software Developer</b>
+                    </div>
+                    <div class="form-check input-group-text bg-white rounded-right">
+                        <input type="radio" name="position" value='QA'<%= userData.position == 'QA' ? 'checked' : '' %>>&nbsp<b>Quality Assurance</b>
+                    </div>
+                </div>
+            </div>
+            <p class="font-weight-bold">Position</p>
+            <div class="input-group mb-3 text-center">
+                <div class="input-group-prepend">
+                    <div class="input-group-text bg-white rounded-right">
+                        <input type="checkbox" name="isfulltime" value="true" <%= userData.isfulltime == true ? 'checked' : '' %>>&nbsp<b>Fulltime</b>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-outline-primary font-weight-bold">Update</button>
+        </form>
+    </div>
+</body>
+<%- include('../partials/footer'); %>
