@@ -1,52 +1,78 @@
 <%- include('../partials/header'); %>
-<%- include('../partials/navbar'); %>
-<h1 class="display-5 m-5 text-center font-weight-bolder">Projects</h1>
-<div class=" container bg-light shadow p-3 mb-5">
+<body>
+  <%- include('../partials/navbar'); %>
+  <img src="../../images/wave.svg" class="wave" alt="">
+  <h1 class="display-5 m-5 text-center font-weight-bolder text-responsive">Projects</h1>
+  <div class=" container bg-light shadow p-3 mb-5">
     <h1 class="display-5 m-4 ">Filters</h1>
     <hr>
     <form action="/" method="post">
-    <label for="" class="font-weight-bold">ID</label>
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <div class="input-group-text">
-                <input type="checkbox" aria-label="Checkbox for following text input">
-              </div>
-            </div>
-            <input type="text" class="form-control" aria-label="Text input with checkbox">
+      <label for="" class="font-weight-bold">ID</label>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <input type="checkbox" aria-label="Checkbox for following text input">
           </div>
-          <label for="" class="font-weight-bold">Name</label>
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <div class="input-group-text">
-                <input type="checkbox" aria-label="Checkbox for following text input">
-              </div>
-            </div>
-            <input type="text" class="form-control" aria-label="Text input with checkbox">
+        </div>
+        <input type="text" class="form-control" aria-label="Text input with checkbox">
+      </div>
+      <label for="" class="font-weight-bold">Name</label>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <input type="checkbox" aria-label="Checkbox for following text input">
           </div>
-          <label for="" class="font-weight-bold">Member</label>
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <div class="input-group-text">
-                <input type="checkbox" aria-label="Checkbox for following text input">
-              </div>
-            </div>
-            <input type="text" class="form-control" aria-label="Text input with checkbox">
+        </div>
+        <input type="text" class="form-control" aria-label="Text input with checkbox">
+      </div>
+      <label for="" class="font-weight-bold">Member</label>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <input type="checkbox" aria-label="Checkbox for following text input">
           </div>
-          <button type="submit" class="btn btn-outline-primary font-weight-bold">Search</button>
+        </div>
+        <input type="text" class="form-control" aria-label="Text input with checkbox">
+      </div>
+      <button type="submit" class="btn btn-outline-primary font-weight-bold">Search</button>
     </form>
     <hr>
     <form action="/" method="post">
-            <div class="input-group mb-3 mx-auto "style="width: 200px;">
-                <div class="input-group-prepend">
-                  <div class="input-group-text">
-                    <input type="checkbox" aria-label="Checkbox for following text input"> 
-                  </div>
-                  <div class="input-group-text">
-                    <input type="checkbox" aria-label="Checkbox for following text input">
-                  </div>
-                </div>
-              </div>
-              <button type="submit" class="btn btn-outline-primary font-weight-bold">Apply</button>
-        </form>
-</div>
+      <p class="font-weight-bold">Options</p>
+      <div class="input-group mb-3 text-center">
+       <div class="input-group-prepend">
+          <div class="input-group-text bg-white">
+            <input type="checkbox" aria-label="Checkbox for following text input">&nbsp<b>ID</b>
+          </div>
+          <div class="input-group-text bg-white">
+            <input type="checkbox" aria-label="Checkbox for following text input">&nbsp<b>Name</b>
+          </div>
+          <div class="input-group-text bg-white rounded-right">
+            <input type="checkbox" aria-label="Checkbox for following text input">&nbsp<b>Members</b>
+          </div><br>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-outline-primary font-weight-bold">Apply</button>
+    </form>
+    <br>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Name</th>
+          <th scope="col">Members</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row"> <a href="">1</a></th>
+          <td>Mark</td>
+          <td>Otto</td>
+          <td><button class="btn btn-outline-success">Edit</button><button class="btn btn-outline-danger">Delete</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
 <%- include('../partials/footer'); %>
