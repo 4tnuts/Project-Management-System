@@ -1,5 +1,7 @@
 const cookieParser = require('cookie-parser');
+const session = require('express-session');
 const createError = require('http-errors');
+const flash = require('connect-flash');
 const express = require('express');
 const logger = require('morgan');
 const { Pool } = require('pg');
@@ -31,6 +33,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(flash());
+app.use(session({
+secret : '4d4d3hm@uT@u4Ja',
+resave : false,
+saveUninitialized : true
+}));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
