@@ -4,7 +4,7 @@
   <%- include('../partials/navbar'); %>
   <h1 class="display-5 m-4 text-center font-weight-bolder">Add Users</h1>
   <div class=" container bg-light form p-3 mb-5">
-    <form action="/add" method="post">
+    <form action="/users/add" method="post">
         <label for="" class="font-weight-bold">Firstname</label>
         <div class="input-group mb-3">
           <input type="text" class="form-control" name="firstname" value="" placeholder="Firstname">
@@ -19,7 +19,7 @@
       </div>
       <label for="" class="font-weight-bold">Password</label>
       <div class="input-group mb-3">
-        <input type="text" class="form-control" name="Password" value="" placeholder="Password">
+        <input type="text" class="form-control" name="password" value="" placeholder="Password">
       </div>
       <p class="font-weight-bold">Position</p>
             <div class="input-group mb-3 text-center">
@@ -29,11 +29,11 @@
                         <label class="custom-control-label" for="customRadioInline1">Manager</label>
                     </div>
                     <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" class="custom-control-input" id="customRadioInline2" name="position" value='SD'>
+                        <input type="radio" class="custom-control-input" id="customRadioInline2" name="position" value='Software Developer'>
                         <label class="custom-control-label" for="customRadioInline2">Software Developer</label>
                     </div>
                     <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" class="custom-control-input" id="customRadioInline3" name="position" value='QA'>
+                        <input type="radio" class="custom-control-input" id="customRadioInline3" name="position" value='Quality Assurance'>
                         <label class="custom-control-label" for="customRadioInline3">Quality Assurance</label>
                     </div>
                 </div>

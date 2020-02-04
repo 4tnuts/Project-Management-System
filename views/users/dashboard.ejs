@@ -104,15 +104,17 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <th scope="row"> <a href=""></a></th>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td><a href=''class="btn btn-outline-success">Edit</a>&nbsp<a
-              href=''class="btn btn-outline-danger">Delete</a></td>
-        </tr>
+          <% users.forEach(user => { %>
+            <tr>
+                <th scope="row"> <a href=""><%= user.userid %></a></th>
+                <td><%= user.email %></td>
+                <td><%= user.firstname + ' ' + user.lastname %></td>
+                <td><%= user.position %></td>
+                <td><%= user.isfulltime == true ? 'Fulltime' : 'Parttime' %></td>
+                <td><a href='/users/edit/<%= user.userid %>'class="btn btn-outline-success">Edit</a>&nbsp<a
+                    href='/users/delete/<%= user.userid %>'class="btn btn-outline-danger">Delete</a></td>
+              </tr>
+          <% }); %>
       </tbody>
     </table>
   </div>
