@@ -20,10 +20,10 @@
       <div class="input-group mb-3">
         <div class="input-group-prepend">
           <div class="input-group-text">
-            <input type="checkbox" name="cfname" value="">
+            <input type="checkbox" name="cfemail" value="">
           </div>
         </div>
-        <input type="text" class="form-control" name="name" value="" placeholder="E-mail">
+        <input type="text" class="form-control" name="email" value="" placeholder="E-mail">
       </div>
       <label for="" class="font-weight-bold">Name</label>
       <div class="input-group mb-3">
@@ -41,8 +41,11 @@
             <input type="checkbox" name="cfmember" value="">
           </div>
         </div>
-        <select class="form-control" name="" id="">
-          <option value="">Choose Position..</option>
+        <select class="form-control" name="position" id="">
+          <option value="" disabled selected>Choose Position...</option>
+          <option value="manager">Manager</option>
+          <option value="SD">Software Developer</option>
+          <option value="QA">Quality Assurance</option>
         </select>
       </div>
       <label for="" class="font-weight-bold">Type of Job</label>
@@ -52,46 +55,59 @@
             <input type="checkbox" name="cfmember" value="">
           </div>
         </div>
-        <select class="form-control" name="" id="">
-          <option value="">Choose Type of Job..</option>
+        <select class="form-control" name="typeofjob" id="">
+          <option value="" disabled selected>Choose Type of Job...</option>
+          <option value="FT">Full-Time</option>
+          <option value="PT">Part-Time</option>
         </select>
       </div>
       <button type="submit" class="btn btn-outline-primary font-weight-bold">Search</button>
     </form>
     <hr>
     <form action="/" method="post">
-      <p class="font-weight-bold">Options</p>
+      <p class="font-weight-bold">Options <br> <small class="text-muted">Uncheck to hide the Column</small></p>
       <div class="input-group mb-3 text-center">
         <div class="input-group-prepend">
           <div class="input-group-text bg-white">
             <input type="checkbox" name="cpid" value="" checked>&nbsp<b>ID</b>
           </div>
           <div class="input-group-text bg-white">
-            <input type="checkbox" name="cpname" value="" checked>&nbsp<b>Name</b>
+            <input type="checkbox" name="cpname" value="" checked>&nbsp<b>E-mail</b>
           </div>
           <div class="input-group-text bg-white rounded-right">
-            <input type="checkbox" name="cpmember" value="" checked>&nbsp<b>Members</b>
-          </div><br>
+            <input type="checkbox" name="cpmember" value="" checked>&nbsp<b>Name</b>
+          </div>
+          <div class="input-group-text bg-white rounded-right">
+            <input type="checkbox" name="cpmember" value="" checked>&nbsp<b>Position</b>
+          </div>
+          <div class="input-group-text bg-white rounded-right">
+            <input type="checkbox" name="cpmember" value="" checked>&nbsp<b>Type of Job</b>
+          </div>
+          <br>
         </div>
       </div>
       <button type="submit" class="btn btn-outline-primary font-weight-bold">Apply</button>
     </form>
-    <br>
-    <a href="/projects/add" class="float-right btn btn-outline-warning list-inline"><i class="list-inline-item" data-feather="plus-square"></i> Projects</a>
+    <hr>
+    <a href="/users/add" class=" btn btn-info list-inline"><i class="list-inline-item" data-feather="plus-square"></i> Users</a>
     <br>
     <br>
     <table class="table table-striped">
       <thead>
         <tr>
           <th scope="col">ID</th>
+          <th scope="col">E-mail</th>
           <th scope="col">Name</th>
-          <th scope="col">Members</th>
+          <th scope="col">Position</th>
+          <th scope="col">Type Of Job</th>
           <th scope="col">Actions</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <th scope="row"> <a href=""></a></th>
+          <td></td>
+          <td></td>
           <td></td>
           <td></td>
           <td><a href=''class="btn btn-outline-success">Edit</a>&nbsp<a

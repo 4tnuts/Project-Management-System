@@ -10,6 +10,23 @@ module.exports = (pool) => {
     res.render('users/dashboard');
   });
 
+  router.get('/add', (req, res, err) => {
+    res.render('users/add');
+  })
+
+  router.get('/edit', (req, res, err) => {
+    res.render('users/edit')
+  })
+
+  router.post('/add', (req, res, next) => { 
+    let insertQuery = 'INSERT INTO users(email, password, firstname, lastname, isfulltime, position) VALUES($1, $2, $3, $4, $5, $6)';
+    let body = [req.body.email, req.body.password, req.body.firstname, req.body.lastname, req.body.isfulltime, req.body.position];
+    pool.query(insertQuery, body, (err) => {
+      if(err) console.error(err);
+      res.redirect('users/add');
+    });
+  });
+  
   router.get('/edit/:id', (req, res, next) => {
     const id = [req.params.id];
     let getUserData = 'SELECT email, password, firstname, lastname, isfulltime, position WHERE userid=$1'
@@ -28,20 +45,11 @@ module.exports = (pool) => {
     })
   })
 
-  router.post('/add', (req, res, next) => { 
-    let insertQuery = 'INSERT INTO users(email, password, firstname, lastname, isfulltime, position) VALUES($1, $2, $3, $4, $5, $6)';
-    let body = [req.body.email, req.body.password, req.body.firstname, req.body.lastname, req.body.isfulltime, req.body.position];
-    pool.query(insertQuery, body, (err) => {
-      if(err) console.error(err);
-      res.json({...body});
-    });
-  });
-
   router.get('/delete/:id', (req, res, next) => {
     let deleteQuery = 'DELETE FROM users WHERE userid = $1';
     let id = [req.params.id];
     pool.query(deleteQuery, id, (err, result) => {
-      res.json({id})
+      res.redirect('/users')
     })
   })
   return router;

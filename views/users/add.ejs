@@ -1,0 +1,55 @@
+<%- include('../partials/header'); %>
+
+<body>
+  <%- include('../partials/navbar'); %>
+  <h1 class="display-5 m-4 text-center font-weight-bolder">Add Users</h1>
+  <div class=" container bg-light form p-3 mb-5">
+    <form action="/add" method="post">
+        <label for="" class="font-weight-bold">Firstname</label>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" name="firstname" value="" placeholder="Firstname">
+        </div>
+        <label for="" class="font-weight-bold">Lastname</label>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" name="lastname" value="" placeholder="Lastname">
+        </div>
+        <label for="" class="font-weight-bold">E-mail</label>
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" name="email" value="" placeholder="E-mail">
+      </div>
+      <label for="" class="font-weight-bold">Password</label>
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" name="Password" value="" placeholder="Password">
+      </div>
+      <p class="font-weight-bold">Position</p>
+            <div class="input-group mb-3 text-center">
+                <div class="input-group-prepend">
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio"  class="custom-control-input" id="customRadioInline1" name="position" value='manager'>
+                        <label class="custom-control-label" for="customRadioInline1">Manager</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" class="custom-control-input" id="customRadioInline2" name="position" value='SD'>
+                        <label class="custom-control-label" for="customRadioInline2">Software Developer</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" class="custom-control-input" id="customRadioInline3" name="position" value='QA'>
+                        <label class="custom-control-label" for="customRadioInline3">Quality Assurance</label>
+                    </div>
+                </div>
+            </div>
+            <p class="font-weight-bold">Type</p>
+            <div class="input-group mb-3 text-center">
+                <div class="input-group-prepend">
+                    <div class="input-group-text bg-white rounded-right">
+                        <input type="checkbox" name="isfulltime" value="true">&nbsp<b>Fulltime</b>
+                    </div>
+                </div>
+            </div>
+      <button type="submit" class="btn btn-outline-success font-weight-bold">Save</button>
+      <a href="/users" class="btn btn-outline-danger"> Cancel</a>
+      <a href="/users/add" class="btn btn-warning"> Reset</a>
+    </form>
+  </div>
+</body>
+<%- include('../partials/footer'); %>
