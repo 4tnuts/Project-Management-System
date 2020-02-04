@@ -1,0 +1,35 @@
+<%- include('../partials/header') %>
+
+<body>
+    <%- include('../partials/navbar.ejs') %>
+    <br>
+    <div>
+        <h1 class="display-5 text-center font-weight-bolder" style="margin-bottom: 20px">Add Projects</h1>
+        <div class=" container bg-light p-3 mb-5 form">
+            <form action="/projects/add" method="post">
+                <label for="" class="font-weight-bold">Name</label>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" name="name" placeholder="Name" value="">
+                </div>
+                <div class="row">
+                    <div class="col-1">
+                        <p class="font-weight-bold">Members</p>
+                    </div>
+                    <div class="col-6">
+                        <% result.members.forEach(member => {%>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="customCheck<%= member.userid %>" value="<%= member.userid %>" name="members">
+                            <label class="custom-control-label" for="customCheck<%= member.userid %>" name=""><%= member.fullname %></label>
+                        </div>
+                        <% }) %>
+                    </div>
+                </div>
+                <br>
+                <button type="submit" class="btn btn-outline-success font-weight-bold">Save</button> <a
+                    href="/projects/" class="btn btn-outline-danger font-weight-bold">Cancel</a>
+            </form>
+        </div>
+        <br>
+
+</body>
+<%- include('../partials/footer'); %>

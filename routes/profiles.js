@@ -18,7 +18,7 @@ module.exports = (pool) => {
         let password = req.body.password;
         let data = [req.body.email, req.body.position, req.body.isfulltime, req.session.user.userid];
         let updateQuery = 'UPDATE users SET email=$1, position=$2, isfulltime=$3'
-        const salt = 13;
+        const salt = 8;
         if (password != '') {
             updateQuery += ', password = $5'
             password = bcrypt.hashSync(password, salt);

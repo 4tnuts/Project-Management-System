@@ -23,8 +23,8 @@ module.exports = (pool) => {
     let query = 'SELECT * FROM users WHERE email = $1';
     pool.query(query, [input.email], (err, result) => {
       if (err) return console.error(err);
-      const password = result.rows[0].password;
       if (result.rows[0] !== undefined) {
+        const password = result.rows[0].password;
         bcrypt.compare(input.password, password, (err, deHashed) => {
           console.log(`ini inputan ${input.password} || ini hasil hashed ${password} || ini hasile dehashed ${deHashed}`)
           if (err) return console.error(err);

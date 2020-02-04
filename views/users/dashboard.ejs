@@ -2,7 +2,7 @@
 
 <body>
   <%- include('../partials/navbar'); %>
-  <h1 class="display-5 m-4 text-center font-weight-bolder">Projects</h1>
+  <h1 class="display-5 m-4 text-center font-weight-bolder">Users</h1>
   <div class=" container bg-light form p-3 mb-5">
     <h1 class="display-5 m-2 ">Filters</h1>
     <hr>
@@ -16,6 +16,15 @@
         </div>
         <input type="text" class="form-control" name="id" value="" placeholder="ID">
       </div>
+      <label for="" class="font-weight-bold">E-mail</label>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <input type="checkbox" name="cfname" value="">
+          </div>
+        </div>
+        <input type="text" class="form-control" name="name" value="" placeholder="E-mail">
+      </div>
       <label for="" class="font-weight-bold">Name</label>
       <div class="input-group mb-3">
         <div class="input-group-prepend">
@@ -23,9 +32,9 @@
             <input type="checkbox" name="cfname" value="">
           </div>
         </div>
-        <input type="text" class="form-control" name="name" value="" placeholder="Project Name">
+        <input type="text" class="form-control" name="name" value="" placeholder="Name">
       </div>
-      <label for="" class="font-weight-bold">Member</label>
+      <label for="" class="font-weight-bold">Position</label>
       <div class="input-group mb-3">
         <div class="input-group-prepend">
           <div class="input-group-text">
@@ -33,7 +42,18 @@
           </div>
         </div>
         <select class="form-control" name="" id="">
-          <option value="">Choose Members..</option>
+          <option value="">Choose Position..</option>
+        </select>
+      </div>
+      <label for="" class="font-weight-bold">Type of Job</label>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <input type="checkbox" name="cfmember" value="">
+          </div>
+        </div>
+        <select class="form-control" name="" id="">
+          <option value="">Choose Type of Job..</option>
         </select>
       </div>
       <button type="submit" class="btn btn-outline-primary font-weight-bold">Search</button>
@@ -70,15 +90,13 @@
         </tr>
       </thead>
       <tbody>
-        <% projects.forEach(project =>{ %>
         <tr>
-          <th scope="row"> <a href=""><%= project.projectid %></a></th>
-          <td><%= project.name%></td>
-          <td><%= project.membersname %></td>
+          <th scope="row"> <a href=""></a></th>
+          <td></td>
+          <td></td>
           <td><a href=''class="btn btn-outline-success">Edit</a>&nbsp<a
               href=''class="btn btn-outline-danger">Delete</a></td>
         </tr>
-      <%});%>
       </tbody>
     </table>
   </div>

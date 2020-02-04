@@ -18,18 +18,21 @@
             <p class="font-weight-bold">Position</p>
             <div class="input-group mb-3 text-center">
                 <div class="input-group-prepend">
-                    <div class="form-check input-group-text bg-white">
-                        <input type="radio" name="position" value='manager' <%= userData.position == 'manager' ? 'checked' : '' %>>&nbsp<b>Manager</b>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio"  class="custom-control-input" id="customRadioInline1" name="position" value='manager' <%= userData.position == 'manager' ? 'checked' : '' %>>
+                        <label class="custom-control-label" for="customRadioInline1">Manager</label>
                     </div>
-                    <div class="form-check input-group-text bg-white">
-                        <input type="radio" name="position" value='SD' <%= userData.position == 'SD' ? 'checked' : '' %>>&nbsp<b>Software Developer</b>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" class="custom-control-input" id="customRadioInline2" name="position" value='SD' <%= userData.position == 'SD' ? 'checked' : '' %>>
+                        <label class="custom-control-label" for="customRadioInline2">Software Developer</label>
                     </div>
-                    <div class="form-check input-group-text bg-white rounded-right">
-                        <input type="radio" name="position" value='QA'<%= userData.position == 'QA' ? 'checked' : '' %>>&nbsp<b>Quality Assurance</b>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" class="custom-control-input" id="customRadioInline3" name="position" value='QA' <%= userData.position == 'QA' ? 'checked' : '' %>>
+                        <label class="custom-control-label" for="customRadioInline3">Quality Assurance</label>
                     </div>
                 </div>
             </div>
-            <p class="font-weight-bold">Position</p>
+            <p class="font-weight-bold">Type</p>
             <div class="input-group mb-3 text-center">
                 <div class="input-group-prepend">
                     <div class="input-group-text bg-white rounded-right">
