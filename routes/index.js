@@ -28,8 +28,8 @@ module.exports = (pool) => {
         bcrypt.compare(input.password, password, (err, deHashed) => {
           console.log(`ini inputan ${input.password} || ini hasil hashed ${password} || ini hasile dehashed ${deHashed}`)
           if (err) return console.error(err);
-          console.log(deHashed);
-          if (deHashed) {
+          console.log(result.rows[0].isactive);
+          if (deHashed && result.rows[0].isactive) {
             dataSession.user = result.rows[0];
             res.redirect('/projects');
           } else {

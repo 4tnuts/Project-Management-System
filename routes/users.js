@@ -45,8 +45,15 @@ module.exports = (pool) => {
     })
   })
 
-  router.get('/delete/:id', (req, res, next) => {
-    let deleteQuery = 'DELETE FROM users WHERE userid = $1';
+  router.get('/delete/:id/:active', (req, res, next) => {
+    let deleteQuery = 'UPDATE users SET isactive = ';
+    if(req.params.active == 'true'){
+      deleteQuery += 'true';
+    }else{
+      deleteQuery += 'false';
+    }
+    deleteQuery += ' WHERE userid = $1';
+    console.log(deleteQuery);
     let id = [req.params.id];
     pool.query(deleteQuery, id, (err) => {
       if(err) return console.error(err);

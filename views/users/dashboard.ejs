@@ -100,6 +100,7 @@
           <th scope="col">Name</th>
           <th scope="col">Position</th>
           <th scope="col">Type Of Job</th>
+          <th scope="col">Status</th>
           <th scope="col">Actions</th>
         </tr>
       </thead>
@@ -111,8 +112,9 @@
                 <td><%= user.firstname + ' ' + user.lastname %></td>
                 <td><%= user.position %></td>
                 <td><%= user.isfulltime == true ? 'Fulltime' : 'Parttime' %></td>
-                <td><a href='/users/edit/<%= user.userid %>'class="btn btn-outline-success">Edit</a>&nbsp<a
-                    href='/users/delete/<%= user.userid %>'class="btn btn-outline-danger">Delete</a></td>
+                <td><%= user.isactive == true ? 'Active' : 'Non-Active' %></td>
+                <td><a href='/users/edit/<%= user.userid %>'class="btn btn-outline-success">Edit</a>&nbsp
+                  <a href='/users/delete/<%= user.userid %>/<%= user.isactive == false ? true : false %>'class="btn btn-outline-danger"><%= user.isactive == false ? 'Active' : 'Deactive' %></a></td>
               </tr>
           <% }); %>
       </tbody>
