@@ -6,62 +6,76 @@
   <div class=" container bg-light form p-3 mb-5">
     <h1 class="display-5 m-2 ">Filters</h1>
     <hr>
-    <form action="/" method="post">
+    <form action="" method="get">
       <label for="" class="font-weight-bold">ID</label>
       <div class="input-group mb-3">
         <div class="input-group-prepend">
           <div class="input-group-text">
-            <input type="checkbox" name="cfid" value="true">
+            <input type="checkbox" name="cfid" value="true" <%= query.cfid == 'true' ? 'checked' : ''%>>
           </div>
         </div>
-        <input type="text" class="form-control" name="id" value="" placeholder="ID">
+        <input type="text" class="form-control" name="id" value="<%=query.id%>" placeholder="ID">
       </div>
       <label for="" class="font-weight-bold">E-mail</label>
       <div class="input-group mb-3">
         <div class="input-group-prepend">
           <div class="input-group-text">
-            <input type="checkbox" name="cfemail" value="">
+            <input type="checkbox" name="cfemail" value="true" <%= query.cfemail == 'true' ? 'checked' : ''%>>
           </div>
         </div>
-        <input type="text" class="form-control" name="email" value="" placeholder="E-mail">
+        <input type="text" class="form-control" name="email" value="<%=query.email%>" placeholder="E-mail">
       </div>
       <label for="" class="font-weight-bold">Name</label>
       <div class="input-group mb-3">
         <div class="input-group-prepend">
           <div class="input-group-text">
-            <input type="checkbox" name="cfname" value="">
+            <input type="checkbox" name="cfname" value="true" <%= query.cfname == 'true' ? 'checked' : ''%>>
           </div>
         </div>
-        <input type="text" class="form-control" name="name" value="" placeholder="Name">
+        <input type="text" class="form-control" name="name" value="<%=query.name%>" placeholder="Name" >
       </div>
       <label for="" class="font-weight-bold">Position</label>
       <div class="input-group mb-3">
         <div class="input-group-prepend">
           <div class="input-group-text">
-            <input type="checkbox" name="cfmember" value="">
+            <input type="checkbox" name="cfposition" value="true" <%= query.cfposition == 'true' ? 'checked' : ''%>>
           </div>
         </div>
         <select class="form-control" name="position" id="">
           <option value="" disabled selected>Choose Position...</option>
-          <option value="manager">Manager</option>
-          <option value="SD">Software Developer</option>
-          <option value="QA">Quality Assurance</option>
+          <option value="Manager" <%=query.position == 'Manager' ? 'selected':''%>>Manager</option>
+          <option value="Software Developer" <%=query.position == 'Software Developer' ? 'selected':''%>>Software Developer</option>
+          <option value="Quality Assurance" <%=query.position == 'Quality Assurance' ? 'selected':''%>>Quality Assurance</option>
         </select>
       </div>
       <label for="" class="font-weight-bold">Type of Job</label>
       <div class="input-group mb-3">
         <div class="input-group-prepend">
           <div class="input-group-text">
-            <input type="checkbox" name="cfmember" value="">
+            <input type="checkbox" name="cftypeofjob" value="true" <%= query.cftypeofjob == 'true' ? 'checked' : ''%>>
           </div>
         </div>
         <select class="form-control" name="typeofjob" id="">
           <option value="" disabled selected>Choose Type of Job...</option>
-          <option value="FT">Full-Time</option>
-          <option value="PT">Part-Time</option>
+          <option value="true" <%=query.typeofjob == 'true' ? 'selected':''%>>Full-Time</option>
+          <option value="false" <%=query.typeofjob == 'false' ?  'selected':''%>>Part-Time</option>
         </select>
-      </div>
+        </div>
+        <label for="" class="font-weight-bold">Status</label>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <div class="input-group-text">
+              <input type="checkbox" name="cfstatus" value="true" <%= query.cfstatus == 'true' ? 'checked' : ''%>>
+            </div>
+          </div>
+          <select class="form-control" name="status" id="">
+            <option value="" disabled selected>Choose Status...</option>
+            <option value="true" <%=query.status == 'true' ? 'selected':''%>>Active</option>
+            <option value="false" <%=query.status == 'false' ? 'selected':''%>>Non-Active</option>
+          </select>
+        </div>
       <button type="submit" class="btn btn-outline-primary font-weight-bold">Search</button>
+      <a href="/users" class="btn btn-warning">Reset</a>
     </form>
     <hr>
     <form action="/" method="post">
@@ -114,11 +128,24 @@
                 <td><%= user.isfulltime == true ? 'Fulltime' : 'Parttime' %></td>
                 <td><%= user.isactive == true ? 'Active' : 'Non-Active' %></td>
                 <td><a href='/users/edit/<%= user.userid %>'class="btn btn-outline-success">Edit</a>&nbsp
-                  <a href='/users/delete/<%= user.userid %>/<%= user.isactive == false ? true : false %>'class="btn btn-outline-danger"><%= user.isactive == false ? 'Active' : 'Deactive' %></a></td>
+                  <a href='/users/activation/<%= user.userid %>/<%= user.isactive == false ? true : false %>'class="btn btn-outline-danger"><%= user.isactive == false ? 'Activate' : 'Deactivate' %></a></td>
               </tr>
           <% }); %>
       </tbody>
     </table>
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+        <li class="page-item <%= currentPage <= 1 ? 'disabled' : ''%>">
+          <a class="page-link" href="/users/?page=<%= parseInt(currentPage) - 1%>" tabindex="-1" aria-disabled="true">Previous</a>
+        </li>
+        <% for(let i = 1; i <= totalPages; i++){ %>
+        <li class="page-item <%= currentPage == i ? 'active':''%>"><a class="page-link" href="<%=url.replace(`page=${currentPage}`,`page=${i}`)%>"><%= i %></a></li>
+        <% } %>
+        <li class="page-item <%= currentPage >= totalPages ? 'disabled' : ''%>">
+          <a class="page-link" href="/users/?page=<%= parseInt(currentPage) + 1%>">Next</a>
+        </li>
+      </ul>
+    </nav>
   </div>
 </body>
 <%- include('../partials/footer'); %>
