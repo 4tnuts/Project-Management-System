@@ -13,7 +13,6 @@ module.exports = (pool) => {
             LEFT JOIN users ON users.userid = members.userid GROUP BY projects.projectid;`
 
             pool.query(getProjectData, (err, projectData) => {
-                console.log(projectData.rows)
                 res.render('projects/dashboard', result = {
                     projects: projectData.rows
                 });
@@ -51,7 +50,6 @@ module.exports = (pool) => {
                 insertQuery += `,($${i}, (select projectid from new_project))`;
                 body = [req.body.name, ...req.body.members];
             }
-            console.log('masuk 3')
         }
         pool.query(insertQuery, body, (err) => {
             if (err) return console.error(err);

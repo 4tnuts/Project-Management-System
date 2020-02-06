@@ -32,7 +32,7 @@
             <input type="checkbox" name="cfname" value="true" <%= query.cfname == 'true' ? 'checked' : ''%>>
           </div>
         </div>
-        <input type="text" class="form-control" name="name" value="<%=query.name%>" placeholder="Name" >
+        <input type="text" class="form-control" name="name" value="<%=query.name%>" placeholder="Name">
       </div>
       <label for="" class="font-weight-bold">Position</label>
       <div class="input-group mb-3">
@@ -44,8 +44,10 @@
         <select class="form-control" name="position" id="">
           <option value="" disabled selected>Choose Position...</option>
           <option value="Manager" <%=query.position == 'Manager' ? 'selected':''%>>Manager</option>
-          <option value="Software Developer" <%=query.position == 'Software Developer' ? 'selected':''%>>Software Developer</option>
-          <option value="Quality Assurance" <%=query.position == 'Quality Assurance' ? 'selected':''%>>Quality Assurance</option>
+          <option value="Software Developer" <%=query.position == 'Software Developer' ? 'selected':''%>>Software
+            Developer</option>
+          <option value="Quality Assurance" <%=query.position == 'Quality Assurance' ? 'selected':''%>>Quality Assurance
+          </option>
         </select>
       </div>
       <label for="" class="font-weight-bold">Type of Job</label>
@@ -60,42 +62,50 @@
           <option value="true" <%=query.typeofjob == 'true' ? 'selected':''%>>Full-Time</option>
           <option value="false" <%=query.typeofjob == 'false' ?  'selected':''%>>Part-Time</option>
         </select>
-        </div>
-        <label for="" class="font-weight-bold">Status</label>
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <div class="input-group-text">
-              <input type="checkbox" name="cfstatus" value="true" <%= query.cfstatus == 'true' ? 'checked' : ''%>>
-            </div>
+      </div>
+      <label for="" class="font-weight-bold">Status</label>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <input type="checkbox" name="cfstatus" value="true" <%= query.cfstatus == 'true' ? 'checked' : ''%>>
           </div>
-          <select class="form-control" name="status" id="">
-            <option value="" disabled selected>Choose Status...</option>
-            <option value="true" <%=query.status == 'true' ? 'selected':''%>>Active</option>
-            <option value="false" <%=query.status == 'false' ? 'selected':''%>>Non-Active</option>
-          </select>
         </div>
+        <select class="form-control" name="status" id="">
+          <option value="" disabled selected>Choose Status...</option>
+          <option value="true" <%=query.status == 'true' ? 'selected':''%>>Active</option>
+          <option value="false" <%=query.status == 'false' ? 'selected':''%>>Non-Active</option>
+        </select>
+      </div>
       <button type="submit" class="btn btn-outline-primary font-weight-bold">Search</button>
       <a href="/users" class="btn btn-warning">Reset</a>
     </form>
     <hr>
-    <form action="/" method="post">
+    <form action="/users" method="post">
       <p class="font-weight-bold">Options <br> <small class="text-muted">Uncheck to hide the Column</small></p>
       <div class="input-group mb-3 text-center">
         <div class="input-group-prepend">
           <div class="input-group-text bg-white">
-            <input type="checkbox" name="cpid" value="" checked>&nbsp<b>ID</b>
+            <input type="checkbox" name="cpid" value="true" <%= options.cpid ? 'checked': '' %>>&nbsp<b>ID</b>
           </div>
           <div class="input-group-text bg-white">
-            <input type="checkbox" name="cpname" value="" checked>&nbsp<b>E-mail</b>
+            <input type="checkbox" name="cpemail" value="true"
+              <%= options.cpemail == 'true' ? 'checked' : '' %>>&nbsp<b>E-mail</b>
           </div>
           <div class="input-group-text bg-white rounded-right">
-            <input type="checkbox" name="cpmember" value="" checked>&nbsp<b>Name</b>
+            <input type="checkbox" name="cpname" value="true"
+              <%= options.cpname == 'true' ? 'checked' : '' %>>&nbsp<b>Name</b>
           </div>
           <div class="input-group-text bg-white rounded-right">
-            <input type="checkbox" name="cpmember" value="" checked>&nbsp<b>Position</b>
+            <input type="checkbox" name="cpposition" value="true"
+              <%= options.cpposition == 'true' ? 'checked' : '' %>>&nbsp<b>Position</b>
           </div>
           <div class="input-group-text bg-white rounded-right">
-            <input type="checkbox" name="cpmember" value="" checked>&nbsp<b>Type of Job</b>
+            <input type="checkbox" name="cptypeofjob" value="true"
+              <%= options.cptypeofjob == 'true' ? 'checked' : '' %>>&nbsp<b>Type of Job</b>
+          </div>
+          <div class="input-group-text bg-white rounded-right">
+            <input type="checkbox" name="cpstatus" value="true"
+              <%= options.cpstatus == 'true' ? 'checked' : ''  %>>&nbsp<b>Status</b>
           </div>
           <br>
         </div>
@@ -103,46 +113,49 @@
       <button type="submit" class="btn btn-outline-primary font-weight-bold">Apply</button>
     </form>
     <hr>
-    <a href="/users/add" class=" btn btn-info list-inline"><i class="list-inline-item" data-feather="plus-square"></i> Users</a>
+    <a href="/users/add" class=" btn btn-info list-inline"><i class="list-inline-item" data-feather="plus-square"></i>
+      Users</a>
     <br>
     <br>
     <table class="table table-striped">
       <thead>
         <tr>
-          <th scope="col">ID</th>
-          <th scope="col">E-mail</th>
-          <th scope="col">Name</th>
-          <th scope="col">Position</th>
-          <th scope="col">Type Of Job</th>
-          <th scope="col">Status</th>
+          <% if (options.cpid)        { %> <th scope="col">Id</th> <% } %>
+          <% if (options.cpemail)     { %> <th scope="col">E-mail</th> <% } %>
+          <% if (options.cpname)      { %> <th scope="col">Name</th> <% } %>
+          <% if (options.cpposition)  { %> <th scope="col">Position</th> <% } %>
+          <% if (options.cptypeofjob) { %> <th scope="col">Type Of Job</th> <% } %>
+          <% if (options.cpstatus)    { %> <th scope="col">Status</th> <% } %>
           <th scope="col">Actions</th>
         </tr>
       </thead>
       <tbody>
-          <% users.forEach(user => { %>
-            <tr>
-                <th scope="row"> <a href=""><%= user.userid %></a></th>
-                <td><%= user.email %></td>
-                <td><%= user.firstname + ' ' + user.lastname %></td>
-                <td><%= user.position %></td>
-                <td><%= user.isfulltime == true ? 'Fulltime' : 'Parttime' %></td>
-                <td><%= user.isactive == true ? 'Active' : 'Non-Active' %></td>
-                <td><a href='/users/edit/<%= user.userid %>'class="btn btn-outline-success">Edit</a>&nbsp
-                  <a href='/users/activation/<%= user.userid %>/<%= user.isactive == false ? true : false %>'class="btn btn-outline-danger"><%= user.isactive == false ? 'Activate' : 'Deactivate' %></a></td>
-              </tr>
-          <% }); %>
+        <% users.forEach(user => { %>
+        <tr>
+          <% if (options.cpid)        { %> <th scope="row"><a href=""><%= user.userid %></a></th>             <% } %>
+          <% if (options.cpemail)     { %> <td><%= user.email %></td>                                         <% } %>
+          <% if (options.cpname)      { %> <td><%= user.firstname + ' ' + user.lastname %></td>               <% } %>
+          <% if (options.cpposition)  { %> <td><%= user.position %></td>                                      <% } %>
+          <% if (options.cptypeofjob) { %> <td><%= user.isfulltime == true ? 'Fulltime' : 'Parttime' %></td>  <% } %>
+          <% if (options.cpstatus)    { %> <td><%= user.isactive == true ? 'Active' : 'Non-Active' %></td>    <% } %>
+          <td><a href='/users/edit/<%= user.userid %>' class="btn btn-outline-success">Edit</a>&nbsp<a href='/users/activation/<%= user.userid %>/<%= user.isactive == false ? true : false %>' class="btn btn-outline-danger"><%= user.isactive == false ? 'Activate' : 'Deactivate' %></a></td>
+        </tr>
+        <% }); %>
       </tbody>
     </table>
     <nav aria-label="Page navigation example">
       <ul class="pagination justify-content-center">
         <li class="page-item <%= currentPage <= 1 ? 'disabled' : ''%>">
-          <a class="page-link" href="<%=url.replace(`page=${currentPage}`,`page=${parseInt(currentPage) - 1}`)%>" tabindex="-1" aria-disabled="true">Previous</a>
+          <a class="page-link" href="<%=url.replace(`page=${currentPage}`,`page=${parseInt(currentPage) - 1}`)%>"
+            tabindex="-1" aria-disabled="true">Previous</a>
         </li>
         <% for(let i = 1; i <= totalPages; i++){ %>
-        <li class="page-item <%= currentPage == i ? 'active':''%>"><a class="page-link" href="<%=url.replace(`page=${currentPage}`,`page=${i}`)%>"><%= i %></a></li>
+        <li class="page-item <%= currentPage == i ? 'active':''%>"><a class="page-link"
+            href="<%=url.replace(`page=${currentPage}`,`page=${i}`)%>"><%= i %></a></li>
         <% } %>
         <li class="page-item <%= currentPage >= totalPages ? 'disabled' : ''%>">
-          <a class="page-link" href="<%=url.replace(`page=${currentPage}`,`page=${parseInt(currentPage) + 1}`)%>">Next</a>
+          <a class="page-link"
+            href="<%=url.replace(`page=${currentPage}`,`page=${parseInt(currentPage) + 1}`)%>">Next</a>
         </li>
       </ul>
     </nav>

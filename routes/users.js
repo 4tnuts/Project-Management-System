@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const bodyParser = require('body-parser');
+const helpers = require('../helpers/util')
 
 router.use(bodyParser.urlencoded({
   extended: false
@@ -8,7 +9,7 @@ router.use(bodyParser.urlencoded({
 router.use(bodyParser.json());
 
 module.exports = (pool) => {
-  router.get('/', (req, res, next) => {
+  router.get('/', helpers.isLoggedIn, (req, res, next) => {
     let countDataUser = 'SELECT count(*) as total FROM users'
     let params = [];
     const currentPage = req.query.page || 1;
@@ -20,7 +21,6 @@ module.exports = (pool) => {
         url.replace("?", `?page=${currentPage}&`) :
         `${url}?page=${currentPage}`;
     }
-    console.log(url)
     if (req.query.id && req.query.cfid) {
       params.push(`userid = ${req.query.id}`);
     }
@@ -30,7 +30,7 @@ module.exports = (pool) => {
     }
 
     if (req.query.name && req.query.cfname) {
-      params.push(`concat(firstname , ' ' , lastname) LIKE '%${req.query.name}%'`)
+      params.push(`concat(firstname , ' ' , lastname) ILIKE '%${req.query.name}%'`)
     }
 
     if (req.query.position && req.query.cfposition) {
@@ -48,8 +48,7 @@ module.exports = (pool) => {
     if (params.length > 0) {
       countDataUser += ' WHERE ' + params.join(' AND ')
     }
-    countDataUser.toLowerCase()
-    console.log(countDataUser);
+
     pool.query(countDataUser, (err, totalData) => {
       if (err) return console.error(err);
       const total = totalData.rows[0].total;
@@ -59,28 +58,50 @@ module.exports = (pool) => {
       if (params.length > 0) {
         getDataUser += ` WHERE ${params.join(' AND ')}`;
       }
-      console.log(getDataUser);
       getDataUser += ` ORDER BY userid LIMIT ${limit} OFFSET ${offset}`
       pool.query(getDataUser, (err, result) => {
         if (err) return console.error(err);
-        res.render('users/dashboard', result = {
-          users: result.rows,
-          query: req.query,
-          totalPages,
-          currentPage,
-          url
+        const getOptions = 'SELECT options from users WHERE userid = $1'
+        const id = [req.session.user.userid];
+        pool.query(getOptions, id, (err, data) => {
+          res.render('users/dashboard', result = {
+            users: result.rows,
+            options : data.rows[0].options,
+            query: req.query,
+            totalPages,
+            currentPage,
+            url
+          });
         });
       })
     })
   });
 
+  router.post('/', (req, res, next) => {
+    const updateOptions = `UPDATE users SET options = $1 WHERE userid = $2`;
+    const data = [{
+      ...req.body
+    }, req.session.user.userid];
+    pool.query(updateOptions, data, (err) => {
+      if (err) throw err;
+      res.redirect('/users');
+    })
+  });
+
   router.get('/add', (req, res, err) => {
     res.render('users/add');
-  })
+  });
 
   router.post('/add', (req, res, next) => {
-    let insertQuery = 'INSERT INTO users(email, password, firstname, lastname, isfulltime, position, isactive, isadmin) VALUES($1, $2, $3, $4, $5, $6, $7, $8)';
-    let body = [req.body.email, req.body.password, req.body.firstname, req.body.lastname, req.body.isfulltime, req.body.position, true, false];
+    let insertQuery = 'INSERT INTO users(email, password, firstname, lastname, isfulltime, position, isactive, isadmin, options) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)';
+    let body = [req.body.email, req.body.password, req.body.firstname, req.body.lastname, req.body.isfulltime, req.body.position, true, false, {
+      cpid: true,
+      cpemail: true,
+      cpname: true,
+      cpposition: true,
+      cptypeofjob: true,
+      cpstatus: true
+    }];
     pool.query(insertQuery, body, (err) => {
       if (err) return console.error(err);
       res.redirect('/users/add');
@@ -115,7 +136,6 @@ module.exports = (pool) => {
       deleteQuery += 'false';
     }
     deleteQuery += ' WHERE userid = $1';
-    console.log(deleteQuery);
     let id = [req.params.id];
     pool.query(deleteQuery, id, (err) => {
       if (err) return console.error(err);
