@@ -1,6 +1,5 @@
 const bodyParser = require('body-parser');
 const express = require('express');
-const adagak = require('../helpers/util.js');
 const router = express.Router();
 
 router.use(bodyParser.urlencoded({
@@ -9,7 +8,7 @@ router.use(bodyParser.urlencoded({
 router.use(bodyParser.json());
 
 module.exports = (pool) => {
-    router.get('/', adagak.isLoggedIn, (req, res, next) => {
+    router.get('/', (req, res, next) => {
             let getProjectData = `SELECT DISTINCT projects.projectid, projects.name, string_agg(users.firstname || ' ' || users.lastname, ', ') as membersname FROM projects LEFT JOIN members ON members.projectid = projects.projectid
             LEFT JOIN users ON users.userid = members.userid GROUP BY projects.projectid;`
 
