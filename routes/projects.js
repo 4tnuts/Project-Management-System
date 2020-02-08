@@ -10,8 +10,8 @@ router.use(bodyParser.json());
 
 module.exports = (pool) => {
     router.get('/', (req, res, next) => {
-        let getProjectData = `SELECT DISTINCT projects.projectid, projects.name, string_agg(users.firstname || ' ' || users.lastname, ', ') as membersname FROM projects LEFT JOIN members ON members.projectid = projects.projectid
-            LEFT JOIN users ON users.userid = members.userid GROUP BY projects.projectid;`
+        let getProjectData = `SELECT DISTINCT projects.projectid, projects.name, users.isactive, string_agg(users.firstname || ' ' || users.lastname, ', ') as membersname FROM projects LEfT JOIN members ON members.projectid = projects.projectid
+        LEFT JOIN users ON users.userid = members.userid GROUP BY projects.projectid, users.isactive ORDER BY projectid ASC;`
 
         pool.query(getProjectData, (err, projectData) => {
             if (err) throw err;
@@ -22,7 +22,7 @@ module.exports = (pool) => {
     });
 
 
-    router.get('/add', (req, res, next) => {projects
+    router.get('/add', (req, res, next) => {
         let getMembers = `SELECT userid, concat(firstname,' ',lastname) as fullname FROM users WHERE isactive = true`
         pool.query(getMembers, (err, member) => {
             res.render('projects/add', result = {
@@ -116,7 +116,7 @@ module.exports = (pool) => {
     })
 
     router.get('/overview', (req,res,next) => {
-        res.render('partials/sidebar');
+        res.render('overview/overview');
     })
 
     return router;
