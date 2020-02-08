@@ -21,3 +21,40 @@
     z-index: -9999;
     left: 0;
 }
+
+.toast{
+    position: absolute;
+    bottom: 0;
+    opacity: 1;
+}
+
+.toast-hidden {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s 2s, opacity 2s linear;
+}
+
+.sidebar{
+    padding: 5px;
+    position: fixed;
+    height: 92.5vh;
+}
+.sidebar ul {
+    color : black
+}
+
+.sidebar ul li{
+    list-style-type: none;
+    margin-left: -2vw;
+    margin-bottom: 5px;
+}
+
+.sidebar ul li a {
+    margin: 10px;
+    color: gray;
+    text-decoration: none;
+}
+
+.sidebar ul li a:hover {
+color:black
+}

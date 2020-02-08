@@ -4,6 +4,7 @@
   <%- include('../partials/navbar'); %>
   <h1 class="display-5 m-4 text-center font-weight-bolder">Add Users</h1>
   <div class=" container bg-light form p-3 mb-5">
+    <h1><%= info %></h1>
     <form action="/users/add" method="post">
         <label for="" class="font-weight-bold">Firstname</label>
         <div class="input-group mb-3">
@@ -46,7 +47,7 @@
                     </div>
                 </div>
             </div>
-      <button type="submit" class="btn btn-outline-success font-weight-bold">Save</button>
+      <button type="submit" onclick="showToast()"class="btn btn-outline-success font-weight-bold">Save</button>
       <a href="/users" class="btn btn-outline-danger"> Cancel</a>
       <a href="/users/add" class="btn btn-warning"> Reset</a>
     </form>

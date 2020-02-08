@@ -117,6 +117,7 @@
       Users</a>
     <br>
     <br>
+    <div class="table-responsive"> 
     <table class="table table-striped">
       <thead>
         <tr>
@@ -126,7 +127,7 @@
           <% if (options.cpposition)  { %> <th scope="col">Position</th> <% } %>
           <% if (options.cptypeofjob) { %> <th scope="col">Type Of Job</th> <% } %>
           <% if (options.cpstatus)    { %> <th scope="col">Status</th> <% } %>
-          <th scope="col">Actions</th>
+          <th scope="col" width="2em">Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -143,6 +144,7 @@
         <% }); %>
       </tbody>
     </table>
+  </div>
     <nav aria-label="Page navigation example">
       <ul class="pagination justify-content-center">
         <li class="page-item <%= currentPage <= 1 ? 'disabled' : ''%>">

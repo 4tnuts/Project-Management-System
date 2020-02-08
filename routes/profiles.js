@@ -9,7 +9,8 @@ module.exports = (pool) => {
         const id = [req.session.user.userid];
         pool.query(selectQuery, id, (err, result) => {
             res.render('profile/profile', {
-                userData: result.rows[0]
+                userData: result.rows[0],
+                url : req.url
             });
         })
     });

@@ -89,7 +89,9 @@ module.exports = (pool) => {
   });
 
   router.get('/add', (req, res, err) => {
-    res.render('users/add');
+    res.render('users/add',{
+      info : req.flash('toast')
+    });
   });
 
   router.post('/add', (req, res, next) => {
@@ -104,6 +106,7 @@ module.exports = (pool) => {
     }];
     pool.query(insertQuery, body, (err) => {
       if (err) return console.error(err);
+      req.flash('toast', 'Berhasil tambahkan user')
       res.redirect('/users/add');
     });
   });
