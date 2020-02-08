@@ -1,0 +1,84 @@
+<%- include('../partials/header'); %>
+
+<body>
+  <%- include('../partials/navbar'); %>
+  <h1 class="display-5 m-4 text-center font-weight-bolder">Project Details</h1>
+  <div class=" container bg-light form p-3 mb-5">
+
+<% include ../partials/detailbar %>
+    <form action="/" method="post" class="mt-4">
+      <label for="" class="font-weight-bold">ID</label>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <input type="checkbox" name="cfid" value="true">
+          </div>
+        </div>
+        <input type="text" class="form-control" name="id" value="" placeholder="ID">
+      </div>
+      <label for="" class="font-weight-bold">Name</label>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <input type="checkbox" name="cfname" value="">
+          </div>
+        </div>
+        <input type="text" class="form-control" name="name" value="" placeholder="Members Name">
+      </div>
+      <label for="" class="font-weight-bold">Position</label>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <input type="checkbox" name="cfposition" value="">
+          </div>
+        </div>
+        <select class="form-control" name="position" id="">
+          <option value="">Choose Position..</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-outline-primary font-weight-bold">Search</button>
+    </form>
+    <hr>
+    <form action="/" method="post">
+      <p class="font-weight-bold">Options</p>
+      <div class="input-group mb-3 text-center">
+        <div class="input-group-prepend">
+          <div class="input-group-text bg-white">
+            <input type="checkbox" name="cpid" value="" checked>&nbsp<b>ID</b>
+          </div>
+          <div class="input-group-text bg-white">
+            <input type="checkbox" name="cpname" value="" checked>&nbsp<b>Name</b>
+          </div>
+          <div class="input-group-text bg-white rounded-right">
+            <input type="checkbox" name="cpposition" value="" checked>&nbsp<b>Position</b>
+          </div><br>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-outline-primary font-weight-bold">Apply</button>
+    </form>
+    <br>
+    <a href="/projects/add" class="float-right btn btn-outline-warning list-inline"><i class="list-inline-item" data-feather="plus-square"></i> Member</a>
+    <br>
+    <br>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Name</th>
+          <th scope="col">Position</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row"> <a href="/projects/overview/" class="btn btn-outline-primary"></a></th>
+          <td></td>
+          <td></td>
+          <td><a href='/projects/edit/'class="btn btn-outline-success">Edit</a>&nbsp<a
+              href='/projects/delete/'class="btn btn-outline-danger">Delete</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+<%- include('../partials/footer'); %>

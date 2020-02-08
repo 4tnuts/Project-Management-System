@@ -1,0 +1,147 @@
+<%- include('../partials/header'); %>
+
+<body>
+  <%- include('../partials/navbar'); %>
+  <h1 class="display-5 m-4 text-center font-weight-bolder">Project Details</h1>
+  <div class=" container bg-light form p-3 mb-5">
+
+<% include ../partials/detailbar %>
+    <form action="/" method="post" class="mt-4">
+      <label for="" class="font-weight-bold">ID</label>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <input type="checkbox" name="cfid" value="true">
+          </div>
+        </div>
+        <input type="text" class="form-control" name="id" value="" placeholder="ID">
+      </div>
+      <label for="" class="font-weight-bold">Subject</label>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <input type="checkbox" name="cfsubject" value="">
+          </div>
+        </div>
+        <input type="text" class="form-control" name="subject" value="" placeholder="Subject">
+      </div>
+      <label for="" class="font-weight-bold">Tracker</label>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <input type="checkbox" name="cftracker" value="">
+          </div>
+        </div>
+        <select class="form-control" name="tracker" id="">
+          <option value="">Choose Position..</option>
+        </select>
+      </div>
+      <label for="" class="font-weight-bold">Done (%) (ini bisa aja nanti make range)</label>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <input type="checkbox" name="cfdone" value="">
+          </div>
+        </div>
+        <select class="form-control" name="done" id="">
+          <option value="">Choose Position..</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-outline-primary font-weight-bold">Search</button>
+      <a href="" class="btn btn-warning"> Reset</a>
+    </form>
+    <hr>
+    <form action="/" method="post">
+      <p class="font-weight-bold">Options</p>
+      <div class="input-group mb-3 text-center">
+        <div class="input-group-prepend">
+          <div class="input-group-text bg-white">
+            <input type="checkbox" name="cpid" value="" checked>&nbsp<b>ID</b>
+          </div>
+          <div class="input-group-text bg-white">
+            <input type="checkbox" name="cptracker" value="" checked>&nbsp<b>Tracker</b>
+          </div>
+          <div class="input-group-text bg-white ">
+            <input type="checkbox" name="cpsubject" value="" checked>&nbsp<b>Subject</b>
+          </div>
+          <div class="input-group-text bg-white">
+            <input type="checkbox" name="cpdescription" value="" checked>&nbsp<b>Description</b>
+          </div>
+          <div class="input-group-text bg-white">
+            <input type="checkbox" name="cpstatus" value="" checked>&nbsp<b>Status</b>
+          </div>
+          <div class="input-group-text bg-white ">
+            <input type="checkbox" name="cpprio" value="" checked>&nbsp<b>Priority</b>
+          </div>
+          <div class="input-group-text bg-white">
+            <input type="checkbox" name="cpassignee" value="" checked>&nbsp<b>Assignee</b>
+          </div>
+          <div class="input-group-text bg-white">
+            <input type="checkbox" name="cpstartdate" value="" checked>&nbsp<b>Start Date</b>
+          </div>
+          <div class="input-group-text bg-white ">
+            <input type="checkbox" name="cpduedate" value="" checked>&nbsp<b>Due Date</b>
+          </div>
+          <div class="input-group-text bg-white rounded-right">
+            <input type="checkbox" name="cpestimatetime" value="" checked>&nbsp<b>Estimated Time</b>
+          </div>
+        </div>
+        <div class="input-group mb-3 mt-2 text-center">
+            <div class="input-group-prepend">
+              <div class="input-group-text bg-white">
+                <input type="checkbox" name="cdpdone" value="" checked>&nbsp<b>Done</b>
+              </div>
+              <div class="input-group-text bg-white">
+                <input type="checkbox" name="cpfile" value="" checked>&nbsp<b>File</b>
+              </div>
+              <div class="input-group-text bg-white ">
+                <input type="checkbox" name="cpspenttime" value="" checked>&nbsp<b>Spent Time</b>
+              </div>
+              <div class="input-group-text bg-white">
+                <input type="checkbox" name="cptargetversion" value="" checked>&nbsp<b>Target Version</b>
+              </div>
+              <div class="input-group-text bg-white">
+                <input type="checkbox" name="cpauthor" value="" checked>&nbsp<b>Author</b>
+              </div>
+              <div class="input-group-text bg-white">
+                <input type="checkbox" name="cpcreateddate" value="" checked>&nbsp<b>Created Date</b>
+              </div>
+              <div class="input-group-text bg-white">
+                <input type="checkbox" name="cpupdateddate" value="" checked>&nbsp<b>Updated Date</b>
+              </div>
+              <div class="input-group-text bg-white">
+                <input type="checkbox" name="cpcloseddate" value="" checked>&nbsp<b>Closed Date</b>
+              </div>
+              <div class="input-group-text bg-white rounded-right">
+                <input type="checkbox" name="cpparenttask" value="" checked>&nbsp<b>Parent Task</b>
+              </div><br>
+            </div>
+      </div>
+      <button type="submit" class="btn btn-outline-primary font-weight-bold">Apply</button>
+    </form> <br>
+  </div>
+    <a href="/projects/add" class="float-right btn btn-outline-warning list-inline"><i class="list-inline-item" data-feather="plus-square"></i> Issues</a>
+    <br>
+    <br>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Name</th>
+          <th scope="col">Position</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row"> <a href="/projects/overview/" class="btn btn-outline-primary"></a></th>
+          <td></td>
+          <td></td>
+          <td><a href='/projects/edit/'class="btn btn-outline-success">Edit</a>&nbsp<a
+              href='/projects/delete/'class="btn btn-outline-danger">Delete</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+<%- include('../partials/footer'); %>

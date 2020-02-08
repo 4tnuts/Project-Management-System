@@ -72,7 +72,7 @@
       <tbody>
         <% projects.forEach(project =>{ %>
         <tr>
-          <th scope="row"> <a href=""><%= project.projectid %></a></th>
+          <th scope="row"> <a href="/projects/overview/<%= project.projectid %>" class="btn btn-outline-primary"><%= project.projectid %></a></th>
           <td><%= project.name%></td>
           <td><%= project.membersname %></td>
           <td><a href='/projects/edit/<%= project.projectid %>'class="btn btn-outline-success">Edit</a>&nbsp<a

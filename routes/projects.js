@@ -115,8 +115,33 @@ module.exports = (pool) => {
         });
     })
 
-    router.get('/overview', (req,res,next) => {
-        res.render('overview/overview');
+    router.get('/overview/:id', (req,res,next) => {
+        const projectid = req.params.id
+        console.log(projectid)
+        res.render('overview/overview', {
+          projectid
+        });
+    })
+
+    router.get('/activity/:id', (req, res, next) => {
+        const projectid = req.params.id
+        res.render('overview/activity',{
+            projectid
+          });
+    })
+
+    router.get('/members/:id', (req, res, next) => {
+        const projectid = req.params.id
+        res.render('overview/members',{
+            projectid
+          });
+    })
+
+    router.get('/issues/:id', (req, res, next) => {
+        const projectid = req.params.id
+        res.render('overview/issues',{
+            projectid
+          });
     })
 
     return router;
