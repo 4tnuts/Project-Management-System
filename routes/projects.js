@@ -9,18 +9,90 @@ router.use(bodyParser.urlencoded({
 router.use(bodyParser.json());
 
 module.exports = (pool) => {
-    router.get('/', (req, res, next) => {
-        let getProjectData = `SELECT DISTINCT projects.projectid, projects.name, users.isactive, string_agg(users.firstname || ' ' || users.lastname, ', ') as membersname FROM projects LEfT JOIN members ON members.projectid = projects.projectid
-        LEFT JOIN users ON users.userid = members.userid GROUP BY projects.projectid, users.isactive ORDER BY projectid ASC;`
+    router.get('/', helpers.isLoggedIn, (req, res, next) => {
+        let getData = `SELECT count(id) as total from (SELECT DISTINCT projects.projectid as id FROM projects LEfT JOIN members ON members.projectid = projects.projectid
+        LEFT JOIN users ON users.userid = members.userid`
+        let queries = [];
+        const query = req.query;
+        const currentPage = req.query.page || 1;
+        const limit = 5;
+        const offset = (currentPage - 1) * limit;
+        const id = [req.session.user.userid]
+        let url = req.originalUrl;
+        if (!url.includes("page")) {
+            url = url.includes("?") ?
+                url.replace("?", `?page=${currentPage}&`) :
+                `${url}?page=${currentPage}`;
+        }
 
-        pool.query(getProjectData, (err, projectData) => {
+        if (query.cfid && query.id) {
+            queries.push(`projects.projectid = ${query.id}`);
+        }
+
+        if (query.cfname && query.name) {
+            queries.push(`projects.name ILIKE '%${query.name}%'`);
+        }
+
+        if (query.cfmember && query.member) {
+            queries.push(`members.userid = ${query.member}`)
+        }
+
+        if (queries.length > 0) {
+            getData += ' WHERE ' + queries.join(' AND ')
+        }
+        getData += ') as total';
+
+        console.log(getData)
+        pool.query(getData, (err, totalData) => {
             if (err) throw err;
-            res.render('projects/dashboard', result = {
-                projects: projectData.rows
-            });
+            const total = totalData.rows[0].total;
+            const totalPages = Math.ceil(total / limit)
+            getData = `SELECT DISTINCT projects.projectid, projects.name, string_agg(users.firstname || ' ' || users.lastname, ', ') as membersname FROM projects LEfT JOIN members ON members.projectid = projects.projectid
+        LEFT JOIN users ON users.userid = members.userid `
+
+
+            if (queries.length > 0) {
+                getData += ' WHERE ' + queries.join(' AND ')
+            }
+
+            getData += ` GROUP BY projects.projectid ORDER BY projectid ASC LIMIT ${limit} OFFSET ${offset}`;
+
+            console.log(getData);
+            pool.query(getData, (err, projectData) => {
+                if (err) throw err;
+                let getMembers = `SELECT userid, concat(firstname,' ',lastname) as fullname FROM users WHERE isactive = true`
+                pool.query(getMembers, (err, members) => {
+                    if(err) throw err
+                    const getOptions= `SELECT projectopt from users where userid = $1`
+                    pool.query(getOptions, id, (err, options) => {
+                        if (err) throw err;
+                        console.log(options.rows)
+                        res.render('projects/dashboard', result = {
+                            projects: projectData.rows,
+                            members: members.rows,
+                            query,
+                            totalPages,
+                            url,
+                            currentPage,
+                            options : options.rows[0].projectopt
+                        });
+                    })
+                    
+                })
+            })
         })
     });
 
+    router.post('/', helpers.isLoggedIn, (req, res, next) => {
+        const updateOptions = `UPDATE users SET projectopt = $1 WHERE userid = $2`;
+        const data = [{
+            ...req.body
+        }, req.session.user.userid];
+        pool.query(updateOptions, data, (err) => {
+            if (err) throw err;
+            res.redirect('/projects');
+        })
+    })
 
     router.get('/add', (req, res, next) => {
         let getMembers = `SELECT userid, concat(firstname,' ',lastname) as fullname FROM users WHERE isactive = true`
@@ -29,56 +101,6 @@ module.exports = (pool) => {
                 members: member.rows
             });
         })
-    })
-
-    router.get('/edit/:id', helpers.isLoggedIn, (req, res, next) => {
-        const getUser = `SELECT userid, concat(firstname,' ',lastname) as fullname FROM users WHERE isactive = true`
-        const id = [req.params.id];
-        pool.query(getUser, (err, users) => {
-            const getDataProject = `SELECT DISTINCT projects.projectid, projects.name, members.userid, concat(users.firstname || ' ' || users.lastname) as fullname FROM projects LEFT JOIN members ON members.projectid = projects.projectid
-        LEFT JOIN users ON users.userid = members.userid WHERE projects.projectid = $1;`
-            pool.query(getDataProject, id, (err, result) => {
-                if (err) throw err;
-                res.render('projects/edit', result = {
-                    projects: result.rows,
-                    members : result.rows.map(member => member.userid),
-                    users : users.rows
-
-                })
-            })
-        })
-    })
-
-    router.post('/edit/:id', helpers.isLoggedIn, (req, res, err) => {
-        let updateProject = 'UPDATE projects SET name = $1 WHERE projectid = $2'
-        let body = [req.body.name, req.params.id];
-        pool.query(updateProject, body, (err) => {
-            if (err) throw err;
-            let deleteProject = 'DELETE FROM members WHERE projectid = $1';
-            const id = [req.params.id];
-            pool.query(deleteProject, id, (err) => {
-                if(err) throw err;
-                let insertQuery = 'INSERT INTO members(projectid, userid) VALUES ($1, $2)';
-                body = [];
-                if (req.body.members == undefined) {
-                    res.redirect(`/projects/edit/${id}`)
-                } else if (typeof req.body.members == 'string') {
-                    body = [req.params.id, req.body.members]
-                } else if (typeof req.body.members == 'object') {
-                    let dataLength = req.body.members.length + 1;
-                    for (let i = 3; i <= dataLength; i++) {
-                        insertQuery += `,($1, $${i})`;
-                        body = [req.params.id, ...req.body.members];
-                    }
-                    console.log(body)
-                    console.log(insertQuery);
-                }
-                pool.query(insertQuery, body, (err) => {
-                    if (err) return console.error(err);
-                    res.redirect(`/projects/edit/${req.params.id}`);
-                })
-            })
-        });
     })
 
     router.post('/add', helpers.isLoggedIn, (req, res, next) => {
@@ -102,6 +124,56 @@ module.exports = (pool) => {
         })
     })
 
+    router.get('/edit/:id', helpers.isLoggedIn, (req, res, next) => {
+        const getUser = `SELECT userid, concat(firstname,' ',lastname) as fullname FROM users WHERE isactive = true`
+        const id = [req.params.id];
+        pool.query(getUser, (err, users) => {
+            const getDataProject = `SELECT DISTINCT projects.projectid, projects.name, members.userid, concat(users.firstname || ' ' || users.lastname) as fullname FROM projects LEFT JOIN members ON members.projectid = projects.projectid
+        LEFT JOIN users ON users.userid = members.userid WHERE projects.projectid = $1;`
+            pool.query(getDataProject, id, (err, result) => {
+                if (err) throw err;
+                res.render('projects/edit', result = {
+                    projects: result.rows,
+                    members: result.rows.map(member => member.userid),
+                    users: users.rows
+
+                })
+            })
+        })
+    })
+
+    router.post('/edit/:id', helpers.isLoggedIn, (req, res, err) => {
+        let updateProject = 'UPDATE projects SET name = $1 WHERE projectid = $2'
+        let body = [req.body.name, req.params.id];
+        pool.query(updateProject, body, (err) => {
+            if (err) throw err;
+            let deleteProject = 'DELETE FROM members WHERE projectid = $1';
+            const id = [req.params.id];
+            pool.query(deleteProject, id, (err) => {
+                if (err) throw err;
+                let insertQuery = 'INSERT INTO members(projectid, userid) VALUES ($1, $2)';
+                body = [];
+                if (req.body.members == undefined) {
+                    res.redirect(`/projects/edit/${id}`)
+                } else if (typeof req.body.members == 'string') {
+                    body = [req.params.id, req.body.members]
+                } else if (typeof req.body.members == 'object') {
+                    let dataLength = req.body.members.length + 1;
+                    for (let i = 3; i <= dataLength; i++) {
+                        insertQuery += `,($1, $${i})`;
+                        body = [req.params.id, ...req.body.members];
+                    }
+                    console.log(body)
+                    console.log(insertQuery);
+                }
+                pool.query(insertQuery, body, (err) => {
+                    if (err) return console.error(err);
+                    res.redirect(`/projects/edit/${req.params.id}`);
+                })
+            })
+        });
+    })
+
     router.get('/delete/:id', helpers.isLoggedIn, (req, res, next) => {
         let deleteProject = 'DELETE FROM members WHERE projectid = $1';
         const id = [req.params.id];
@@ -115,33 +187,33 @@ module.exports = (pool) => {
         });
     })
 
-    router.get('/overview/:id', (req,res,next) => {
+    router.get('/overview/:id', (req, res, next) => {
         const projectid = req.params.id
         console.log(projectid)
         res.render('overview/overview', {
-          projectid
+            projectid
         });
     })
 
     router.get('/activity/:id', (req, res, next) => {
         const projectid = req.params.id
-        res.render('overview/activity',{
+        res.render('overview/activity', {
             projectid
-          });
+        });
     })
 
     router.get('/members/:id', (req, res, next) => {
         const projectid = req.params.id
-        res.render('overview/members',{
+        res.render('overview/members', {
             projectid
-          });
+        });
     })
 
     router.get('/issues/:id', (req, res, next) => {
         const projectid = req.params.id
-        res.render('overview/issues',{
+        res.render('overview/issues', {
             projectid
-          });
+        });
     })
 
     return router;
