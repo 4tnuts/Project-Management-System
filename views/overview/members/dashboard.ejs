@@ -34,9 +34,9 @@
         </div>
         <select class="form-control" name="position" id="">
           <option value="" disabled selected>Choose Position..</option>
-          <option value="Manager" <% query.position == 'Manager' ? 'selected' : '' %>>Manager</option>
-          <option value="Software Developer" <% query.position == 'Manager' ? 'selected' : '' %>>Software Developer</option>
-          <option value="Quality Assurance" <% query.position == 'Manager' ? 'selected' : '' %>>Quality Assurance</option>
+          <option value="Manager" <%= query.position == 'Manager' ? 'selected' : '' %>>Manager</option>
+          <option value="Software Developer" <%= query.position == 'Software Developer' ? 'selected' : '' %>>Software Developer</option>
+          <option value="Quality Assurance" <%= query.position == 'Quality Assurance' ? 'selected' : '' %>>Quality Assurance</option>
         </select>
       </div>
       <button type="submit" class="btn btn-outline-primary font-weight-bold">Search</button>

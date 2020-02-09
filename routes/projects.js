@@ -225,7 +225,7 @@ module.exports = (pool) => {
         }
 
         if(query.cfposition && query.position){
-            queries.push(`members.role = ${query.position}`)
+            queries.push(`members.role = '${query.position}'`)
         }
 
         if(queries.length > 0){
@@ -254,6 +254,7 @@ module.exports = (pool) => {
                 console.log(membersdata.rows)
                 const userid = [req.session.user.userid];
                 const getOptions = 'SELECT membersopt from users WHERE userid = $1';
+                console.log(query)
                 pool.query(getOptions, userid, (err, options) => {
                     res.render('overview/members/dashboard', {
                         projectid,
