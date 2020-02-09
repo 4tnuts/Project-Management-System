@@ -1,0 +1,36 @@
+<%- include('../../partials/header'); %>
+
+<body>
+  <%- include('../../partials/navbar'); %>
+  <h1 class="display-5 m-4 text-center font-weight-bolder">Add Member</h1>
+  <div class=" container bg-light form p-3 mb-5">
+    <%- include('../../partials/detailbar'); %>
+    <form action="/projects/members/<%= projectid %>/add" method="post" class="mt-4">
+        <label for="" class="font-weight-bold">Members</label>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" name="fullname" value="" placeholder="Firstname">
+        </div>
+      <p class="font-weight-bold">Position</p>
+            <div class="input-group mb-3 text-center">
+                <div class="input-group-prepend">
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio"  class="custom-control-input" id="customRadioInline1" name="position" value='manager'>
+                        <label class="custom-control-label" for="customRadioInline1">Manager</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" class="custom-control-input" id="customRadioInline2" name="position" value='Software Developer'>
+                        <label class="custom-control-label" for="customRadioInline2">Software Developer</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" class="custom-control-input" id="customRadioInline3" name="position" value='Quality Assurance'>
+                        <label class="custom-control-label" for="customRadioInline3">Quality Assurance</label>
+                    </div>
+                </div>
+            </div>
+      <button type="submit" class="btn btn-outline-success font-weight-bold">Save</button>
+      <a href="/projects/members/<%= projectid %>" class="btn btn-outline-danger"> Cancel</a>
+      <a href="/projects/members/<%= projectid %>/add" class="btn btn-warning"> Reset</a>
+    </form>
+  </div>
+</body>
+<%- include('../../partials/footer'); %>

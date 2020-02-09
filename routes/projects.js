@@ -283,12 +283,27 @@ module.exports = (pool) => {
     })
 
     router.get('/members/:id/add', (req,res,next) => {
-        res.render('overview/members/add')
-        
+        const projectid = req.params.id;
+        res.render('overview/members/add', {
+            projectid
+        })
     })
 
     router.post('/members/:id/add', (req, res, next) => {
 
+    })
+
+    router.get('/members/:id/edit/:userid', (req,res,next) => {
+        const ids = [req.params.id, req.params.userid];
+        let getMemberData = `select members.userid, members.role, CONCAT(users.firstname,' ', users.lastname) AS fullname from members 
+        INNER JOIN users ON members.userid = users.userid WHERE members.projectid = $1 AND members.userid = $2`
+        pool.query(getMemberData, ids, (err,member) => {
+            if(err) throw err;
+            console.log(member.rows[0]);
+            res.render('overview/members/edit', {
+                member : member.rows[0]
+            })
+        })
     })
 
     router.get('/issues/:id', (req, res, next) => {
