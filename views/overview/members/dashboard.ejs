@@ -1,17 +1,17 @@
-<%- include('../partials/header'); %>
+<%- include('../../partials/header'); %>
 
 <body>
-  <%- include('../partials/navbar'); %>
-  <h1 class="display-5 m-4 text-center font-weight-bolder">Projects</h1>
+  <%- include('../../partials/navbar'); %>
+  <h1 class="display-5 m-4 text-center font-weight-bolder">Project Details</h1>
   <div class=" container bg-light form p-3 mb-5">
-    <h1 class="display-5 m-2 ">Filters</h1>
-    <hr>
-    <form action="" method="get">
+
+<% include ../../partials/detailbar %>
+    <form action="" method="get" class="mt-4">
       <label for="" class="font-weight-bold">ID</label>
       <div class="input-group mb-3">
         <div class="input-group-prepend">
           <div class="input-group-text">
-            <input type="checkbox" name="cfid" value="true" <%= query.cfid == 'true' ? 'checked' : ''%>>
+            <input type="checkbox" name="cfid" value="true" <%= query.cfid == 'true' ? 'checked' : '' %>>
           </div>
         </div>
         <input type="text" class="form-control" name="id" value="<%= query.id %>" placeholder="ID">
@@ -20,30 +20,30 @@
       <div class="input-group mb-3">
         <div class="input-group-prepend">
           <div class="input-group-text">
-            <input type="checkbox" name="cfname" value="true" <%= query.cfname == 'true' ? 'checked' : ''%>>
+            <input type="checkbox" name="cfname" value="true" <%= query.cfname == 'true' ? 'checked' : '' %>>
           </div>
         </div>
-        <input type="text" class="form-control" name="name" value="<%= query.name %>" placeholder="Project Name" >
+        <input type="text" class="form-control" name="name" value="<%= query.name %>" placeholder="Members Name">
       </div>
-      <label for="" class="font-weight-bold">Member</label>
+      <label for="" class="font-weight-bold">Position</label>
       <div class="input-group mb-3">
         <div class="input-group-prepend">
           <div class="input-group-text">
-            <input type="checkbox" name="cfmember" value="true" <%= query.cfmember == 'true' ? 'checked' : ''%>>
+            <input type="checkbox" name="cfposition" value="true" <%= query.cfposition == 'true' ? 'checked' : '' %>>
           </div>
         </div>
-        <select class="form-control" name="member" id="">
-          <option value="">Choose Members..</option>
-          <% members.forEach(member =>{ %>
-              <option value="<%= member.userid %>" <%= member.userid == query.member ? 'selected' : ''%>><%= member.fullname %></option>
-            <% }); %>
+        <select class="form-control" name="position" id="">
+          <option value="" disabled selected>Choose Position..</option>
+          <option value="Manager" <% query.position == 'Manager' ? 'selected' : '' %>>Manager</option>
+          <option value="Software Developer" <% query.position == 'Manager' ? 'selected' : '' %>>Software Developer</option>
+          <option value="Quality Assurance" <% query.position == 'Manager' ? 'selected' : '' %>>Quality Assurance</option>
         </select>
       </div>
       <button type="submit" class="btn btn-outline-primary font-weight-bold">Search</button>
-      <a href="/projects" class="btn btn-warning">Reset</a>
+      <a href="/projects/members/<%= projectid %>" class="btn btn-warning"> Reset</a>
     </form>
     <hr>
-    <form action="/projects" method="post">
+    <form action="/projects/members/<%= projectid %>" method="post">
       <p class="font-weight-bold">Options</p>
       <div class="input-group mb-3 text-center">
         <div class="input-group-prepend">
@@ -51,40 +51,40 @@
             <input type="checkbox" name="cpid" value="true" <%= options.cpid == 'true' ? 'checked' : '' %>>&nbsp<b>ID</b>
           </div>
           <div class="input-group-text bg-white">
-            <input type="checkbox" name="cpname" value="true" <%= options.cpname == 'true' ? 'checked' : '' %>>&nbsp<b>Name</b>
+            <input type="checkbox" name="cpname" value="true" <%= options.cpname ==  'true' ? 'checked' : '' %>>&nbsp<b>Name</b>
           </div>
           <div class="input-group-text bg-white rounded-right">
-            <input type="checkbox" name="cpmember" value="true" <%= options.cpmember == 'true' ? 'checked' : '' %>>&nbsp<b>Members</b>
+            <input type="checkbox" name="cpposition" value="true" <%= options.cpposition == 'true' ? 'checked' : ''%>>&nbsp<b>Position</b>
           </div><br>
         </div>
       </div>
       <button type="submit" class="btn btn-outline-primary font-weight-bold">Apply</button>
     </form>
-    <br>
     <hr>
     <a href="/projects/add" class=" btn btn-info list-inline"><i class="list-inline-item" data-feather="plus-square"></i>
-      Projects</a>
+      Member</a>
     <br>
     <br>
     <table class="table table-striped">
       <thead>
         <tr>
-          <% if (options.cpid)    { %> <th scope="col">ID</th>      <% } %>
-          <% if (options.cpname)  { %> <th scope="col">Name</th>    <% } %>
-          <% if (options.cpmember) { %> <th scope="col">Members</th> <% } %>
+          <% if(options.cpid) { %><th scope="col">ID</th> <% } %>
+          <% if(options.cpname) { %> <th scope="col">Name</th> <% } %>
+          <% if(options.cpposition) { %><th scope="col">Position</th> <% } %>
           <th scope="col">Actions</th>
         </tr>
       </thead>
       <tbody>
-        <% projects.forEach(project =>{ %>
+        <% members.forEach(member => { %>
         <tr>
-          <% if (options.cpid)    { %><th scope="row"> <a href="/projects/overview/<%= project.projectid %>" class="btn btn-outline-primary"><%= project.projectid %></a></th><% } %>
-          <% if (options.cpname)  { %><td><%= project.name%></td><% } %>
-            <% if (options.cpmember) { %> <td><%= project.membersname %></td><% } %>
-          <td><a href='/projects/edit/<%= project.projectid %>'class="btn btn-outline-success">Edit</a>&nbsp<a
-              href='/projects/delete/<%= project.projectid %>'class="btn btn-outline-danger">Delete</a></td>
+          <% if(options.cpid) { %><th scope="row"><%= member.userid%></th><% } %>
+          <% if(options.cpname) { %><td><%= member.fullname%></td><% } %>
+            <% if(options.cpposition) { %><td><%= member.role == null ? 'No Position' : member.role %></td><% } %>
+          <td><a href='/projects/edit/'class="btn btn-outline-success">Edit</a>&nbsp<a
+              href='/projects/delete/'class="btn btn-outline-danger">Delete</a></td>
         </tr>
-      <%});%>
+
+      <% }) %>
       </tbody>
     </table>
     <nav aria-label="Page navigation example">
@@ -105,4 +105,4 @@
     </nav>
   </div>
 </body>
-<%- include('../partials/footer'); %>
+<%- include('../../partials/footer'); %>

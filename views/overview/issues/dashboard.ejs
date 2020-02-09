@@ -1,11 +1,11 @@
-<%- include('../partials/header'); %>
+<%- include('../../partials/header'); %>
 
 <body>
-  <%- include('../partials/navbar'); %>
+  <%- include('../../partials/navbar'); %>
   <h1 class="display-5 m-4 text-center font-weight-bolder">Project Details</h1>
   <div class=" container bg-light form p-3 mb-5">
 
-<% include ../partials/detailbar %>
+<% include ../../partials/detailbar %>
     <form action="/" method="post" class="mt-4">
       <label for="" class="font-weight-bold">ID</label>
       <div class="input-group mb-3">
@@ -120,7 +120,9 @@
       <button type="submit" class="btn btn-outline-primary font-weight-bold">Apply</button>
     </form> <br>
   </div>
-    <a href="/projects/add" class="float-right btn btn-outline-warning list-inline"><i class="list-inline-item" data-feather="plus-square"></i> Issues</a>
+  <hr>
+  <a href="/projects/add" class=" btn btn-info list-inline"><i class="list-inline-item" data-feather="plus-square"></i>
+    Member</a>
     <br>
     <br>
     <table class="table table-striped">
@@ -144,4 +146,4 @@
     </table>
   </div>
 </body>
-<%- include('../partials/footer'); %>
+<%- include('../../partials/footer'); %>

@@ -202,16 +202,97 @@ module.exports = (pool) => {
         });
     })
 
-    router.get('/members/:id', (req, res, next) => {
-        const projectid = req.params.id
-        res.render('overview/members', {
-            projectid
-        });
+    //MEMBERS
+    router.get('/members/:id', helpers.isLoggedIn, (req, res, next) => {
+        const projectid = [req.params.id]
+        let url = req.originalUrl;
+        const currentPage = req.query.page || 1;
+        const limit = 5;
+        const offset= (currentPage - 1) * limit
+        const query = req.query;
+        const queries = [];
+        if(!url.includes('?page')){
+            url = url.includes('?') ? url.replace(`?page=${currentPage}&`) : url.replace(`${url}?page=${currentPage}`);
+        }
+        let totalData = `SELECT COUNT(member) as total  FROM (SELECT members.userid FROM members JOIN users ON members.userid = users.userid WHERE members.projectid = $1`
+        
+        if(query.cfid && query.id){
+            queries.push(`members.userid = ${query.id}`);
+        }
+
+        if(query.cfname && query.name){
+            queries.push(`CONCAT(users.firstname, ' ', users.lastname) ILIKE '%${query.name}%'`);
+        }
+
+        if(query.cfposition && query.position){
+            queries.push(`members.role = ${query.position}`)
+        }
+
+        if(queries.length > 0){
+            totalData += ` AND ${queries.join(' AND ')}`
+        }
+
+        totalData += `) as member`;
+
+        console.log(totalData);
+        pool.query(totalData, projectid, (err, members) => {
+            if(err) throw err;
+            const total = members.rows[0].total;
+            const totalPages = Math.ceil(total/limit);
+            let getMembers = `select members.userid, members.role, CONCAT(users.firstname,' ', users.lastname) AS fullname from members 
+            INNER JOIN users ON members.userid = users.userid WHERE members.projectid = $1`
+
+            if(queries.length > 0){
+                getMembers += ` AND ${queries.join(' AND ')}`
+            }
+
+            getMembers+=` LIMIT ${limit} OFFSET ${offset}`;
+            console.log(getMembers);
+
+            pool.query(getMembers, projectid, (err, membersdata) => {
+                if(err) throw (err);
+                console.log(membersdata.rows)
+                const userid = [req.session.user.userid];
+                const getOptions = 'SELECT membersopt from users WHERE userid = $1';
+                pool.query(getOptions, userid, (err, options) => {
+                    res.render('overview/members/dashboard', {
+                        projectid,
+                        members: membersdata.rows,
+                        currentPage,
+                        totalPages,
+                        url,
+                        query,
+                        options : options.rows[0].membersopt
+                    });
+                })
+            } )
+        })
+        
+    })
+
+    router.post('/members/:id', (req, res, next) => {
+        const updateOptions = `UPDATE users SET membersopt = $1 WHERE userid = $2`;
+        const data = [{
+            ...req.body
+        }, req.session.user.userid];
+        pool.query(updateOptions, data, (err) => {
+            if (err) throw err;
+            res.redirect(`/projects/members/${req.params.id}`);
+        })
+    })
+
+    router.get('/members/:id/add', (req,res,next) => {
+        res.render('overview/members/add')
+        
+    })
+
+    router.post('/members/:id/add', (req, res, next) => {
+
     })
 
     router.get('/issues/:id', (req, res, next) => {
         const projectid = req.params.id
-        res.render('overview/issues', {
+        res.render('overview/issues/dashboard', {
             projectid
         });
     })

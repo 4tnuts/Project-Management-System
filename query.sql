@@ -13,3 +13,6 @@ JOIN users ON users.userid = members.userid GROUP BY members.projectid;
 -- GET allname in members DISTINCT
 SELECT DISTINCT concat(users.firstname || ' ' || users.lastname)as fullname from members join users on users.userid = members.userid;
 
+-- GET total member in project
+select count(data) as total from  (select members.userid, members.role, CONCAT(users.firstname,' ', users.lastname) AS fullname from members 
+INNER JOIN users ON members.userid = users.userid where members.projectid = 6)as data;

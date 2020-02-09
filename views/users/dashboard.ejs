@@ -133,7 +133,7 @@
       <tbody>
         <% users.forEach(user => { %>
         <tr>
-          <% if (options.cpid)        { %> <th scope="row"><a href=""><%= user.userid %></a></th>             <% } %>
+          <% if (options.cpid)        { %> <th scope="row"><%= user.userid %></th>                            <% } %>
           <% if (options.cpemail)     { %> <td><%= user.email %></td>                                         <% } %>
           <% if (options.cpname)      { %> <td><%= user.firstname + ' ' + user.lastname %></td>               <% } %>
           <% if (options.cpposition)  { %> <td><%= user.position %></td>                                      <% } %>
