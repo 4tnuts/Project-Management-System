@@ -2,6 +2,8 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const router = express.Router();
 const helpers = require('../helpers/util')
+const moment = require('moment');
+
 
 router.use(bodyParser.urlencoded({
     extended: false
@@ -188,6 +190,7 @@ module.exports = (pool) => {
         });
     })
 
+    //OVERVIEW
     router.get('/overview/:id', (req, res, next) => {
         const projectid = req.params.id
         console.log(projectid)
@@ -196,6 +199,7 @@ module.exports = (pool) => {
         });
     })
 
+    //ACTIVITY
     router.get('/activity/:id', (req, res, next) => {
         const projectid = req.params.id
         res.render('overview/activity', {
@@ -345,6 +349,41 @@ module.exports = (pool) => {
             projectid
         });
     })
+    
+    router.post('/issues/:id', (req, res, next) => {
+        const body = req.body;
+        const projectid = req.params.id;
+
+
+    })
+
+    router.get('/issues/:id/add', (req, res, next) => {
+        const projectid = req.params.id;
+        res.render('overview/issues/add', {
+            projectid
+        })
+    })
+    
+    router.post('/issues/:id/add', (req, res, next) => {
+        const projectid = req.params.id;
+        const body = req.body;
+        res.redirect(`/projects/issues/${projectid}/add`);
+    })
+
+    router.get('/issues/:id/edit/:issueid', (req, res, next) => {
+        const projectid = req.params.id;
+        const issuesid = req.params.issueid;
+        res.render('overview/issues/edit', {
+            projectid
+        });
+    })
+
+    router.post('/issues/:id/edit/:issueid', (req, res, next) => {
+        const projectid = req.params.id;
+        const issueid = req.params.issueid
+    })
+
+
 
     return router;
 }

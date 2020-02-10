@@ -32,7 +32,7 @@
             <input type="checkbox" name="cftracker" value="">
           </div>
         </div>
-        <select class="form-control" name="tracker" id="">
+        <select class="form-control" name="tracker" >
           <option value="">Choose Position..</option>
         </select>
       </div>
@@ -43,7 +43,7 @@
             <input type="checkbox" name="cfdone" value="">
           </div>
         </div>
-        <select class="form-control" name="done" id="">
+        <select class="form-control" name="done" >
           <option value="">Choose Position..</option>
         </select>
       </div>
@@ -55,65 +55,84 @@
       <p class="font-weight-bold">Options</p>
       <div class="input-group mb-3 text-center">
         <div class="input-group-prepend">
-          <div class="input-group-text bg-white">
-            <input type="checkbox" name="cpid" value="" checked>&nbsp<b>ID</b>
+          <div class="custom-control custom-checkbox custom-control-inline">
+            <input type="checkbox" name="cpid" value="" class="custom-control-input" id="options1" checked>
+            <label class="custom-control-label" for="options1">ID</label>
           </div>
-          <div class="input-group-text bg-white">
-            <input type="checkbox" name="cptracker" value="" checked>&nbsp<b>Tracker</b>
+          <div class="custom-control custom-checkbox custom-control-inline">
+            <input type="checkbox" name="cptracker"  value="" class="custom-control-input" id="options2" checked>
+            <label class="custom-control-label" for="options2">Tracker</label>
           </div>
-          <div class="input-group-text bg-white ">
-            <input type="checkbox" name="cpsubject" value="" checked>&nbsp<b>Subject</b>
+          <div class="custom-control custom-checkbox custom-control-inline">
+            <input type="checkbox" name="cpsubject" value="" class="custom-control-input" id="options3" checked>
+            <label class="custom-control-label" for="options3">Subject</label>
           </div>
-          <div class="input-group-text bg-white">
-            <input type="checkbox" name="cpdescription" value="" checked>&nbsp<b>Description</b>
+          <div class="custom-control custom-checkbox custom-control-inline">
+            <input type="checkbox" name="cpdescription" value="" class="custom-control-input" id="options4" checked>
+            <label class="custom-control-label" for="options4">Description</label>
           </div>
-          <div class="input-group-text bg-white">
-            <input type="checkbox" name="cpstatus" value="" checked>&nbsp<b>Status</b>
+          <div class="custom-control custom-checkbox custom-control-inline">
+            <input type="checkbox" name="cpstatus" value="" class="custom-control-input" id="options5" checked>
+            <label class="custom-control-label" for="options5">Status</label>
           </div>
-          <div class="input-group-text bg-white ">
-            <input type="checkbox" name="cpprio" value="" checked>&nbsp<b>Priority</b>
+          <div class="custom-control custom-checkbox custom-control-inline">
+            <input type="checkbox" name="cpprio" value="" class="custom-control-input" id="options6" checked>
+            <label class="custom-control-label" for="options6">Priority</label>
           </div>
-          <div class="input-group-text bg-white">
-            <input type="checkbox" name="cpassignee" value="" checked>&nbsp<b>Assignee</b>
+          <div class="custom-control custom-checkbox custom-control-inline">
+            <input type="checkbox" name="cpassignee" value="" class="custom-control-input" id="options7" checked>
+            <label class="custom-control-label" for="options7">Assignee</label>
           </div>
-          <div class="input-group-text bg-white">
-            <input type="checkbox" name="cpstartdate" value="" checked>&nbsp<b>Start Date</b>
+          <div class="custom-control custom-checkbox custom-control-inline">
+            <input type="checkbox" name="cpstartdate" value="" class="custom-control-input" id="options8" checked>
+            <label class="custom-control-label" for="options8">Start Date</label>
           </div>
-          <div class="input-group-text bg-white ">
-            <input type="checkbox" name="cpduedate" value="" checked>&nbsp<b>Due Date</b>
+          <div class="custom-control custom-checkbox custom-control-inline ">
+            <input type="checkbox" name="cpduedate" value="" class="custom-control-input" id="options9" checked>
+            <label class="custom-control-label" for="options9">Due Date</label>
           </div>
-          <div class="input-group-text bg-white rounded-right">
-            <input type="checkbox" name="cpestimatetime" value="" checked>&nbsp<b>Estimated Time</b>
+          <div class="custom-control custom-checkbox custom-control-inline">
+            <input type="checkbox" name="cpestimatetime" value="" class="custom-control-input" id="options10" checked>
+            <label class="custom-control-label" for="options10">Estimated Time</label>
           </div>
         </div>
         <div class="input-group mb-3 mt-2 text-center">
             <div class="input-group-prepend">
-              <div class="input-group-text bg-white">
-                <input type="checkbox" name="cdpdone" value="" checked>&nbsp<b>Done</b>
+              <div class="custom-control custom-checkbox custom-control-inline">
+                <input type="checkbox" name="cdpdone" value="" class="custom-control-input" id="options11" checked>
+                <label class="custom-control-label" for="options11">Done</label>
               </div>
-              <div class="input-group-text bg-white">
-                <input type="checkbox" name="cpfile" value="" checked>&nbsp<b>File</b>
+              <div class="custom-control custom-checkbox custom-control-inline">
+                <input type="checkbox" name="cpfile" value="" class="custom-control-input" id="options12" checked>
+                <label class="custom-control-label" for="options12">File</label>
               </div>
-              <div class="input-group-text bg-white ">
-                <input type="checkbox" name="cpspenttime" value="" checked>&nbsp<b>Spent Time</b>
+              <div class="custom-control custom-checkbox custom-control-inline">
+                <input type="checkbox" name="cpspenttime" value="" class="custom-control-input" id="options13" checked>
+                <label class="custom-control-label" for="options13">Spent Time</label>
               </div>
-              <div class="input-group-text bg-white">
-                <input type="checkbox" name="cptargetversion" value="" checked>&nbsp<b>Target Version</b>
+              <div class="custom-control custom-checkbox custom-control-inline">
+                <input type="checkbox" name="cptargetversion" value="" class="custom-control-input" id="options14" checked>
+                <label class="custom-control-label" for="options14">Target Version</label>
               </div>
-              <div class="input-group-text bg-white">
-                <input type="checkbox" name="cpauthor" value="" checked>&nbsp<b>Author</b>
+              <div class="custom-control custom-checkbox custom-control-inline">
+                <input type="checkbox" name="cpauthor" value="" class="custom-control-input" id="options15" checked>
+                <label class="custom-control-label" for="options15">Author</label>
               </div>
-              <div class="input-group-text bg-white">
-                <input type="checkbox" name="cpcreateddate" value="" checked>&nbsp<b>Created Date</b>
+              <div class="custom-control custom-checkbox custom-control-inline">
+                <input type="checkbox" name="cpcreateddate" value="" class="custom-control-input" id="options16" checked>
+                <label class="custom-control-label" for="options16">Created Date</label>
               </div>
-              <div class="input-group-text bg-white">
-                <input type="checkbox" name="cpupdateddate" value="" checked>&nbsp<b>Updated Date</b>
+              <div class="custom-control custom-checkbox custom-control-inline">
+                <input type="checkbox" name="cpupdateddate" value="" class="custom-control-input" id="options17" checked>
+                <label class="custom-control-label" for="options17">Updated Date</label>
               </div>
-              <div class="input-group-text bg-white">
-                <input type="checkbox" name="cpcloseddate" value="" checked>&nbsp<b>Closed Date</b>
+              <div class="custom-control custom-checkbox custom-control-inline">
+                <input type="checkbox" name="cpcloseddate" value="" class="custom-control-input" id="options18" checked>
+                <label class="custom-control-label" for="options18">Closed Date</label>
               </div>
-              <div class="input-group-text bg-white rounded-right">
-                <input type="checkbox" name="cpparenttask" value="" checked>&nbsp<b>Parent Task</b>
+              <div class="custom-control custom-checkbox custom-control-inline">
+                <input type="checkbox" name="cpparenttask" value="" class="custom-control-input" id="options19" checked>
+                <label class="custom-control-label" for="options19">Parent Task</label>
               </div><br>
             </div>
       </div>
@@ -121,29 +140,65 @@
     </form> <br>
   </div>
   <hr>
-  <a href="/projects/add" class=" btn btn-info list-inline"><i class="list-inline-item" data-feather="plus-square"></i>
-    Member</a>
+  <a href="/projects/issues/<%= projectid %>/add" class=" btn btn-info list-inline"><i class="list-inline-item" data-feather="plus-square"></i>
+    Issue</a>
     <br>
     <br>
-    <table class="table table-striped">
+    <div class="table-responsive">
+    <table class=" table table-striped">
+
       <thead>
         <tr>
           <th scope="col">ID</th>
-          <th scope="col">Name</th>
-          <th scope="col">Position</th>
+          <th scope="col">Tracker</th>
+          <th scope="col">Subject</th>
+          <th scope="col">Description</th>
+          <th scope="col">Status</th>
+          <th scope="col">Priority</th>
+          <th scope="col">Assigne</th>
+          <th scope="col">Start Date</th>
+          <th scope="col">Due Date</th>
+          <th scope="col">Estimated Time</th>
+          <th scope="col">Done</th>
+          <th scope="col">File</th>
+          <th scope="col">Spent Time</th>
+          <th scope="col">Target Version</th>
+          <th scope="col">Author</th>
+          <th scope="col">Created Date</th>
+          <th scope="col">Updated date</th>
+          <th scope="col">Closed Date</th>
+          <th scope="col">Parent Task</th>
           <th scope="col">Actions</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <th scope="row"> <a href="/projects/overview/" class="btn btn-outline-primary"></a></th>
+          <th scope="row"></th>
           <td></td>
           <td></td>
-          <td><a href='/projects/edit/'class="btn btn-outline-success">Edit</a>&nbsp<a
-              href='/projects/delete/'class="btn btn-outline-danger">Delete</a></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td><a href='/projects/issues/<%= %>/edit/<%= %>' class="btn btn-outline-success">Edit</a>&nbsp
+            <a href='/projects/issues/<%= %>/delete/<%= %>' class="btn btn-outline-danger">Delete</a></td>
         </tr>
       </tbody>
     </table>
+
+  </div>
   </div>
 </body>
 <%- include('../../partials/footer'); %>
