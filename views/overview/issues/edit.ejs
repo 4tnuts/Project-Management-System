@@ -136,7 +136,7 @@
       <label for="" class="font-weight-bold">Parent Task</label>
       <div class="input-group mb-3">
         <select class="form-control" name="parenttask" id="">
-          <option value="" disabled selected>Choose Parent Task..</option>
+          <option value="null" disabled selected>Choose Parent Task..</option>
           <% tasks.forEach(task => { %>
           <option value="<%= task.issueid %>"> <%= task.subject %>(<%= task.tracker %>)</option>
           <% }) %>

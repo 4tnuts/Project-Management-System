@@ -369,10 +369,9 @@ module.exports = (pool) => {
 
     router.get('/issues/:id/add', helpers.isLoggedIn, (req, res, next) => {
         const projectid = req.params.id;
-        let getMembers = `SELECT userid, concat(firstname,' ',lastname) as fullname FROM users WHERE isactive = true AND userid IN (select users.userid from members inner join users on users.userid = members.userid where members.projectid = $1)`
+        const getMembers = `SELECT userid, concat(firstname,' ',lastname) as fullname FROM users WHERE isactive = true AND userid IN (select users.userid from members inner join users on users.userid = members.userid where members.projectid = $1)`
         pool.query(getMembers, [projectid], (err, members) => {
             if(err) throw err;
-            console.log(members.rows)
         res.render('overview/issues/add', {
             projectid,
             members : members.rows
@@ -384,7 +383,7 @@ module.exports = (pool) => {
         const projectid = req.params.id;
         const authorid = req.session.user.userid;
             const {tracker, subject, description, status, priority, assignee, startdate, duedate, estimatetime, done, file} = req.body;
-            let addIssues = `INSERT INTO issues (projectid,tracker,subject,description,status,priority,assignee,startdate,duedate,estimatedate,done,files,author,createddate) 
+            const addIssues = `INSERT INTO issues (projectid,tracker,subject,description,status,priority,assignee,startdate,duedate,estimatedate,done,files,author,createddate) 
                 VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,NOW())`
             const issuesData = [projectid, tracker, subject, description, status, priority, assignee, startdate, duedate, estimatetime, done, file, authorid]
             pool.query(addIssues, issuesData, (err) => {
@@ -396,17 +395,16 @@ module.exports = (pool) => {
     router.get('/issues/:id/edit/:issueid', helpers.isLoggedIn, (req, res, next) => {
         const projectid = req.params.id;
         const issuesid = req.params.issueid;
-        const loggerData = {userid : req.session.user.userid, fullname : req.session.user.firstname.concat(' ', req.session.user.lastname)}
-        let getIssue = 'SELECT * FROM issues WHERE issueid = $1 AND projectid = $2'
+        const getIssue = 'SELECT * FROM issues WHERE issueid = $1 AND projectid = $2'
         pool.query(getIssue, [issuesid, projectid], (err, issues) => {
             if(err) throw err;
-            console.log(issues.rows);
-            let getMembers = `SELECT userid, concat(firstname,' ',lastname) as fullname FROM users WHERE isactive = true AND userid IN (select users.userid from members inner join users on users.userid = members.userid where members.projectid = $1)`
+            const getMembers = `SELECT userid, concat(firstname,' ',lastname) as fullname FROM users WHERE isactive = true AND userid IN (select users.userid from members inner join users on users.userid = members.userid where members.projectid = $1)`
             pool.query(getMembers, [projectid], (err, members) => {
                 if(err) throw err;
-                let getProjectTasks = 'SELECT issueid, subject, tracker from issues GROUP BY issueid HAVING projectid = $1';
+                const getProjectTasks = 'SELECT issueid, subject, tracker from issues GROUP BY issueid HAVING projectid = $1';
                 pool.query(getProjectTasks, [projectid], (err, tasks) => {
                     if(err) throw err;
+                    console.log(tasks);
                     res.render('overview/issues/edit', {
                         projectid,
                         tasks : tasks.rows, 
@@ -420,8 +418,19 @@ module.exports = (pool) => {
     })
 
     router.post('/issues/:id/edit/:issueid', helpers.isLoggedIn, (req, res, next) => {
+        const issueid = req.params.issueid;
         const projectid = req.params.id;
-        const issueid = req.params.issueid
+        const userid = req.session.user.userid;
+        const updateIssue = `UPDATE issues SET tracker = $1, subject = $2, description = $3, status = $4, priority = $5, assignee = $6, duedate = $7, done = $8, 
+                             files = $9, spenttime = $10, targetversion = $11, author = $12, updateddate = NOW(), parenttask = $13 WHERE issueid = $14`;
+        const {tracker, subject, description, status, priority, assignee, duedate, done, file, spenttime, targetversion, parenttask} = req.body;
+        console.log(req.body);
+        const issueData = [tracker, subject, description, status, priority, assignee, duedate, done, file, spenttime, targetversion,  userid, parenttask, issueid]
+        pool.query(updateIssue, issueData, (err) => {
+            if(err) throw err;
+            res.redirect(`/projects/issues/${projectid}/edit/${issueid}`);
+        })
+        
     })
 
 
