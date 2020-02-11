@@ -139,7 +139,7 @@
           <% if (options.cpposition)  { %> <td><%= user.position %></td>                                      <% } %>
           <% if (options.cptypeofjob) { %> <td><%= user.isfulltime == true ? 'Fulltime' : 'Parttime' %></td>  <% } %>
           <% if (options.cpstatus)    { %> <td><%= user.isactive == true ? 'Active' : 'Non-Active' %></td>    <% } %>
-          <td><a href='/users/edit/<%= user.userid %>' class="btn btn-outline-success">Edit</a>&nbsp<a href='/users/activation/<%= user.userid %>/<%= user.isactive == false ? true : false %>' class="btn btn-outline-danger"><%= user.isactive == false ? 'Activate' : 'Deactivate' %></a></td>
+          <td><a href='/users/edit/<%= user.userid %>' class="btn btn-outline-success"><i class="list-inline-item" data-feather="edit"></i></a>&nbsp<a href='/users/activation/<%= user.userid %>/<%= user.isactive == false ? true : false %>' class="btn btn-outline-danger"><%= user.isactive == false ? 'Activate' : 'Deactivate' %></a></td>
         </tr>
         <% }); %>
       </tbody>

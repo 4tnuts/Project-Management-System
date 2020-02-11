@@ -85,7 +85,9 @@
       <div class="input-group mb-3">
         <select class="form-control" name="assignee" id="">
           <option value="" disabled selected>Choose Assignee..</option>
-          <option value="test asigne">asigne</option>
+          <% members.forEach(member => { %>
+            <option value="<%= member.userid %>"><%= member.fullname %></option>
+          <% }) %>
         </select>
       </div>
       <label for="" class="font-weight-bold">Start Date</label>
