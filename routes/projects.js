@@ -371,6 +371,8 @@ module.exports = (pool) => {
         const projectid = req.params.id;
         let getMembers = `SELECT userid, concat(firstname,' ',lastname) as fullname FROM users WHERE isactive = true AND userid IN (select users.userid from members inner join users on users.userid = members.userid where members.projectid = $1)`
         pool.query(getMembers, [projectid], (err, members) => {
+            if(err) throw err;
+            console.log(members.rows)
         res.render('overview/issues/add', {
             projectid,
             members : members.rows
@@ -394,9 +396,27 @@ module.exports = (pool) => {
     router.get('/issues/:id/edit/:issueid', helpers.isLoggedIn, (req, res, next) => {
         const projectid = req.params.id;
         const issuesid = req.params.issueid;
-        res.render('overview/issues/edit', {
-            projectid
-        });
+        const loggerData = {userid : req.session.user.userid, fullname : req.session.user.firstname.concat(' ', req.session.user.lastname)}
+        let getIssue = 'SELECT * FROM issues WHERE issueid = $1 AND projectid = $2'
+        pool.query(getIssue, [issuesid, projectid], (err, issues) => {
+            if(err) throw err;
+            console.log(issues.rows);
+            let getMembers = `SELECT userid, concat(firstname,' ',lastname) as fullname FROM users WHERE isactive = true AND userid IN (select users.userid from members inner join users on users.userid = members.userid where members.projectid = $1)`
+            pool.query(getMembers, [projectid], (err, members) => {
+                if(err) throw err;
+                let getProjectTasks = 'SELECT issueid, subject, tracker from issues GROUP BY issueid HAVING projectid = $1';
+                pool.query(getProjectTasks, [projectid], (err, tasks) => {
+                    if(err) throw err;
+                    res.render('overview/issues/edit', {
+                        projectid,
+                        tasks : tasks.rows, 
+                        issues : issues.rows[0],
+                        members : members.rows,
+                        moment
+                    });
+                })
+            })
+        })
     })
 
     router.post('/issues/:id/edit/:issueid', helpers.isLoggedIn, (req, res, next) => {

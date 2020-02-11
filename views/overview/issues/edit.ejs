@@ -5,57 +5,57 @@
   <h1 class="display-5 m-4 text-center font-weight-bolder">Edit Issues</h1>
   <div class=" container bg-light form p-3 mb-5">
     <%- include('../../partials/detailbar'); %>
-    <form action="/projects/issues/<%= projectid %>/add" method="post" class="mt-4">
+    <form action="/projects/issues/<%= projectid %>/edit/<%= issues.issueid %>" method="post" class="mt-4">
       <p class="font-weight-bold">Tracker</p>
       <div class="input-group mb-3 text-center">
         <div class="input-group-prepend">
           <div class="custom-control custom-radio custom-control-inline">
-            <input type="radio" class="custom-control-input" id="tracker1" name="tracker" value='Bug'>
+            <input type="radio" class="custom-control-input" id="tracker1" name="tracker" value='Bug' <%= issues.tracker == 'Bug' ? 'checked' : '' %>>
             <label class="custom-control-label" for="tracker1">Bug</label>
           </div>
           <div class="custom-control custom-radio custom-control-inline">
-            <input type="radio" class="custom-control-input" id="tracker2" name="tracker" value='Feature'>
+            <input type="radio" class="custom-control-input" id="tracker2" name="tracker" value='Feature' <%= issues.tracker == 'Feature' ? 'checked' : '' %>>
             <label class="custom-control-label" for="tracker2">Feature</label>
           </div>
           <div class="custom-control custom-radio custom-control-inline">
-            <input type="radio" class="custom-control-input" id="tracker3" name="tracker" value='Support'>
+            <input type="radio" class="custom-control-input" id="tracker3" name="tracker" value='Support' <%= issues.tracker == 'Support' ? 'checked' : '' %>>
             <label class="custom-control-label" for="tracker3">Support</label>
           </div>
         </div>
       </div>
       <label for="" class="font-weight-bold">Subject</label>
       <div class="input-group mb-3">
-        <input type="text" class="form-control" name="subject" placeholder="Subject">
+        <input type="text" class="form-control" name="subject" placeholder="Subject" value="<%= issues.subject %>">
       </div>
       <label for="" class="font-weight-bold">Description</label>
       <div class="input-group mb-3">
-        <textarea type="area" class="form-control" name="description"></textarea>
+        <textarea type="area" class="form-control" name="description"><%= issues.description %></textarea>
       </div>
       <p class="font-weight-bold">Status</p>
       <div class="input-group mb-3 text-center">
         <div class="input-group-prepend">
           <div class="custom-control custom-radio custom-control-inline">
-            <input type="radio" class="custom-control-input" id="status1" name="status" value='New' checked>
+            <input type="radio" class="custom-control-input" id="status1" name="status" value='New' <%= issues.status == 'New' ? 'checked' : '' %>>
             <label class="custom-control-label" for="status1">New</label>
           </div>
           <div class="custom-control custom-radio custom-control-inline">
-            <input type="radio" class="custom-control-input" id="status2" name="status" value='In Progress' disabled>
+            <input type="radio" class="custom-control-input" id="status2" name="status" value='In Progress' <%= issues.status == 'In Progress' ? 'checked' : '' %>>
             <label class="custom-control-label" for="status2">In Progress</label>
           </div>
           <div class="custom-control custom-radio custom-control-inline">
-            <input type="radio" class="custom-control-input" id="status3" name="status" value='Feedback' disabled>
+            <input type="radio" class="custom-control-input" id="status3" name="status" value='Feedback' <%= issues.status == 'Feedback' ? 'checked' : '' %>>
             <label class="custom-control-label" for="status3">Feedback</label>
           </div>
           <div class="custom-control custom-radio custom-control-inline">
-            <input type="radio" class="custom-control-input" id="status4" name="status" value='Resolved' disabled>
+            <input type="radio" class="custom-control-input" id="status4" name="status" value='Resolved' <%= issues.status == 'Resolved' ? 'checked' : '' %>>
             <label class="custom-control-label" for="status4">Resolved</label>
           </div>
           <div class="custom-control custom-radio custom-control-inline">
-            <input type="radio" class="custom-control-input" id="status5" name="status" value='Closed' disabled>
+            <input type="radio" class="custom-control-input" id="status5" name="status" value='Closed' <%= issues.status == 'Closed' ? 'checked' : '' %>>
             <label class="custom-control-label" for="status5">Closed</label>
           </div>
           <div class="custom-control custom-radio custom-control-inline">
-            <input type="radio" class="custom-control-input" id="status6" name="status" value='Rejected' disabled>
+            <input type="radio" class="custom-control-input" id="status6" name="status" value='Rejected' <%= issues.status == 'Rejected' ? 'checked' : '' %>>
             <label class="custom-control-label" for="status6">Rejected</label>
           </div>
         </div>
@@ -64,19 +64,19 @@
       <div class="input-group mb-3 text-center">
         <div class="input-group-prepend">
           <div class="custom-control custom-radio custom-control-inline">
-            <input type="radio" class="custom-control-input" id="priority1" name="priority" value='Normal'>
+            <input type="radio" class="custom-control-input" id="priority1" name="priority" value='Normal' <%= issues.priority == 'Normal' ? 'checked' : '' %>>
             <label class="custom-control-label" for="priority1">Normal</label>
           </div>
           <div class="custom-control custom-radio custom-control-inline">
-            <input type="radio" class="custom-control-input" id="priority2" name="priority" value='High'>
+            <input type="radio" class="custom-control-input" id="priority2" name="priority" value='High'<%= issues.priority == 'High' ? 'checked' : '' %>>
             <label class="custom-control-label" for="priority2">High</label>
           </div>
           <div class="custom-control custom-radio custom-control-inline">
-            <input type="radio" class="custom-control-input" id="priority3" name="priority" value='Urgent'>
+            <input type="radio" class="custom-control-input" id="priority3" name="priority" value='Urgent'<%= issues.priority == 'Urgent' ? 'checked' : '' %>>
             <label class="custom-control-label" for="priority3">Urgent</label>
           </div>
           <div class="custom-control custom-radio custom-control-inline">
-            <input type="radio" class="custom-control-input" id="priority4" name="priority" value='Immediate'>
+            <input type="radio" class="custom-control-input" id="priority4" name="priority" value='Immediate'<%= issues.priority == 'Immidiate' ? 'checked' : '' %>>
             <label class="custom-control-label" for="priority4">Immediate</label>
           </div>
         </div>
@@ -85,36 +85,38 @@
       <div class="input-group mb-3">
         <select class="form-control" name="assignee" id="">
           <option value="" disabled selected>Choose Assignee..</option>
-          <option value="test asigne">asigne</option>
+          <% members.forEach(member => { %>
+            <option value="<%= member.userid %>"><%= member.fullname %></option>
+          <% }) %>
         </select>
       </div>
       <label for="" class="font-weight-bold">Start Date</label>
       <div class="input-group mb-3">
-        <input type="date" class="form-control" name="startdate">
+        <input type="date" class="form-control" name="startdate" value="<%= moment(issues.startdate).format('YYYY-MM-DD') %>" disabled>
       </div>
       <label for="" class="font-weight-bold">Due Date</label>
       <div class="input-group mb-3">
-        <input type="date" class="form-control" name="duedate">
+        <input type="date" class="form-control" name="duedate" value="<%= moment(issues.duedate).format('YYYY-MM-DD') %>">
       </div>
       <label for="" class="font-weight-bold">Estimate Time</label>
       <div class="input-group mb-3">
-        <input type="number" class="form-control" name="estimatetime" placeholder="Hours Format">
+        <input type="number" class="form-control" name="estimatetime" placeholder="Hours Format" value="<%= issues.estimatedate %>" disabled>
       </div>
       <label for="" class="font-weight-bold">Done(%)</label>
       <div class="input-group mb-3">
         <select class="form-control" name="done" id="">
           <option value="" disabled selected>Choose Percentage..</option>
-          <option value="0">0%</option>
-          <option value="10">10%</option>
-          <option value="20">20%</option>
-          <option value="30">30%</option>
-          <option value="40">40%</option>
-          <option value="50">50%</option>
-          <option value="60">60%</option>
-          <option value="70">70%</option>
-          <option value="80">80%</option>
-          <option value="90">90%</option>
-          <option value="100">100%</option>
+          <option value="0"  <%= issues.done == 0 ? 'selected' : '' %>>0%</option>
+          <option value="10" <%= issues.done == 0 ? 'selected' : '' %>>10%</option>
+          <option value="20" <%= issues.done == 0 ? 'selected' : '' %>>20%</option>
+          <option value="30" <%= issues.done == 0 ? 'selected' : ''%>>30%</option>
+          <option value="40" <%= issues.done == 0 ? 'selected' : ''%>>40%</option>
+          <option value="50" <%= issues.done == 0 ? 'selected' : ''%>>50%</option>
+          <option value="60" <%= issues.done == 0 ? 'selected' : ''%>>60%</option>
+          <option value="70" <%= issues.done == 0 ? 'selected' : ''%>>70%</option>
+          <option value="80" <%= issues.done == 0 ? 'selected' : ''%>>80%</option>
+          <option value="90" <%= issues.done == 0 ? 'selected' : ''%>>90%</option>
+          <option value="100"<%= issues.done == 0 ? 'selected' : ''%>>100%</option>
         </select>
       </div>
       <label for="" class="font-weight-bold">File</label>
@@ -123,11 +125,21 @@
         <label class="custom-file-label" for="customFile">Choose file</label>
       </div>
       <br>
+      <label for="" class="font-weight-bold">Spent Time</label>
+      <div class="input-group mb-3">
+        <input type="number" class="form-control" name="spenttime" placeholder="Hours Format" value="<%= issues.spenttime %>" required>
+      </div>
+      <label for="" class="font-weight-bold">Target Version</label>
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" name="targetversion" placeholder="ex: v1.0" value="<%= issues.targetversion %>" required>
+      </div>
       <label for="" class="font-weight-bold">Parent Task</label>
       <div class="input-group mb-3">
         <select class="form-control" name="parenttask" id="">
           <option value="" disabled selected>Choose Parent Task..</option>
-          <option value="0">0%</option>
+          <% tasks.forEach(task => { %>
+          <option value="<%= task.issueid %>"> <%= task.subject %>(<%= task.tracker %>)</option>
+          <% }) %>
         </select>
       </div>
       <button type="submit" class="btn btn-outline-success font-weight-bold">Save</button>
