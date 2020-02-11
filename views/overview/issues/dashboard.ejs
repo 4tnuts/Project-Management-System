@@ -83,21 +83,21 @@
             <input type="checkbox" name="cpassignee" value="" class="custom-control-input" id="options7" checked>
             <label class="custom-control-label" for="options7">Assignee</label>
           </div>
-          <div class="custom-control custom-checkbox custom-control-inline">
-            <input type="checkbox" name="cpstartdate" value="" class="custom-control-input" id="options8" checked>
-            <label class="custom-control-label" for="options8">Start Date</label>
-          </div>
-          <div class="custom-control custom-checkbox custom-control-inline ">
-            <input type="checkbox" name="cpduedate" value="" class="custom-control-input" id="options9" checked>
-            <label class="custom-control-label" for="options9">Due Date</label>
-          </div>
-          <div class="custom-control custom-checkbox custom-control-inline">
-            <input type="checkbox" name="cpestimatetime" value="" class="custom-control-input" id="options10" checked>
-            <label class="custom-control-label" for="options10">Estimated Time</label>
-          </div>
         </div>
         <div class="input-group mb-3 mt-2 text-center">
             <div class="input-group-prepend">
+              <div class="custom-control custom-checkbox custom-control-inline">
+                <input type="checkbox" name="cpstartdate" value="" class="custom-control-input" id="options8" checked>
+                <label class="custom-control-label" for="options8">Start Date</label>
+              </div>
+              <div class="custom-control custom-checkbox custom-control-inline ">
+                <input type="checkbox" name="cpduedate" value="" class="custom-control-input" id="options9" checked>
+                <label class="custom-control-label" for="options9">Due Date</label>
+              </div>
+              <div class="custom-control custom-checkbox custom-control-inline">
+                <input type="checkbox" name="cpestimatetime" value="" class="custom-control-input" id="options10" checked>
+                <label class="custom-control-label" for="options10">Estimated Time</label>
+              </div>
               <div class="custom-control custom-checkbox custom-control-inline">
                 <input type="checkbox" name="cdpdone" value="" class="custom-control-input" id="options11" checked>
                 <label class="custom-control-label" for="options11">Done</label>
@@ -107,28 +107,8 @@
                 <label class="custom-control-label" for="options12">File</label>
               </div>
               <div class="custom-control custom-checkbox custom-control-inline">
-                <input type="checkbox" name="cpspenttime" value="" class="custom-control-input" id="options13" checked>
-                <label class="custom-control-label" for="options13">Spent Time</label>
-              </div>
-              <div class="custom-control custom-checkbox custom-control-inline">
-                <input type="checkbox" name="cptargetversion" value="" class="custom-control-input" id="options14" checked>
-                <label class="custom-control-label" for="options14">Target Version</label>
-              </div>
-              <div class="custom-control custom-checkbox custom-control-inline">
                 <input type="checkbox" name="cpauthor" value="" class="custom-control-input" id="options15" checked>
                 <label class="custom-control-label" for="options15">Author</label>
-              </div>
-              <div class="custom-control custom-checkbox custom-control-inline">
-                <input type="checkbox" name="cpcreateddate" value="" class="custom-control-input" id="options16" checked>
-                <label class="custom-control-label" for="options16">Created Date</label>
-              </div>
-              <div class="custom-control custom-checkbox custom-control-inline">
-                <input type="checkbox" name="cpupdateddate" value="" class="custom-control-input" id="options17" checked>
-                <label class="custom-control-label" for="options17">Updated Date</label>
-              </div>
-              <div class="custom-control custom-checkbox custom-control-inline">
-                <input type="checkbox" name="cpcloseddate" value="" class="custom-control-input" id="options18" checked>
-                <label class="custom-control-label" for="options18">Closed Date</label>
               </div>
               <div class="custom-control custom-checkbox custom-control-inline">
                 <input type="checkbox" name="cpparenttask" value="" class="custom-control-input" id="options19" checked>
@@ -161,40 +141,33 @@
           <th scope="col">Estimated Time</th>
           <th scope="col">Done</th>
           <th scope="col">File</th>
-          <th scope="col">Spent Time</th>
-          <th scope="col">Target Version</th>
           <th scope="col">Author</th>
-          <th scope="col">Created Date</th>
-          <th scope="col">Updated date</th>
-          <th scope="col">Closed Date</th>
           <th scope="col">Parent Task</th>
           <th scope="col">Actions</th>
         </tr>
       </thead>
       <tbody>
+       <% issues.forEach(issue => { %>
         <tr>
-          <th scope="row"></th>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td><a href='/projects/issues/<%= %>/edit/<%= %>' class="btn btn-outline-success">Edit</a>&nbsp
-            <a href='/projects/issues/<%= %>/delete/<%= %>' class="btn btn-outline-danger">Delete</a></td>
+          <th scope="row"><%= issue.issueid %></td>
+          <td><%= issue.tracker %></td>
+          <td><%= issue.subject %></td>
+          <td><%= issue.description %></td>
+          <td><%= issue.status %></td>
+          <td><%= issue.priority %></td>
+          <td><%= issue.assignee %></td>
+          <td><%= issue.startdate %></td>
+          <td><%= issue.duedate %></td>
+          <td><%= issue.estimatedate %></td>
+          <td><%= issue.done %></td>
+          <td><%= issue.file %></td>
+          <td><%= issue.author %></td>
+          <td><%= issue.parenttask %></td>
+          <td><a href='/projects/issues/<%= issue.projectid %>/edit/<%= issue.issueid %>' class="btn btn-outline-success">Edit</a>&nbsp
+            <a href='/projects/issues/<%= issue.projectid %>/delete/<%= issue.issueid %>' class="btn btn-outline-danger">Delete</a></td>
         </tr>
+      <% }) %>
+
       </tbody>
     </table>
 

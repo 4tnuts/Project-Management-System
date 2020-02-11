@@ -344,12 +344,20 @@ module.exports = (pool) => {
     })
 
     router.get('/issues/:id', helpers.isLoggedIn, (req, res, next) => {
-        const projectid = req.params.id
+        const projectid = [req.params.id];
         const getIssues = 'SELECT * from issues where projectid = $1'
-        // pool.query(getIssues, )
-        res.render('overview/issues/dashboard', {
-            projectid
-        });
+        pool.query(getIssues, projectid, (err, data) => {
+            let issues = data.rows.map(issue => { 
+                issue.startdate = moment(issue.startdate).format('LL')
+                issue.duedate = moment(issue.duedate).format('LL')
+                return issue;
+            })
+            console.log(issues);
+            res.render('overview/issues/dashboard', {
+                projectid,
+                issues
+            });
+        })
     })
 
     router.post('/issues/:id', helpers.isLoggedIn, (req, res, next) => {

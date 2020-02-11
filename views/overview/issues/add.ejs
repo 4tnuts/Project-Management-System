@@ -92,19 +92,19 @@
       </div>
       <label for="" class="font-weight-bold">Start Date</label>
       <div class="input-group mb-3">
-        <input type="date" class="form-control" name="startdate">
+        <input type="date" class="form-control" name="startdate" required>
       </div>
       <label for="" class="font-weight-bold">Due Date</label>
       <div class="input-group mb-3">
-        <input type="date" class="form-control" name="duedate">
+        <input type="date" class="form-control" name="duedate" required>
       </div>
       <label for="" class="font-weight-bold">Estimate Time</label>
       <div class="input-group mb-3">
-        <input type="number" class="form-control" name="estimatetime" placeholder="Hours Format">
+        <input type="number" class="form-control" name="estimatetime" placeholder="Hours Format" required>
       </div>
       <label for="" class="font-weight-bold">Done(%)</label>
       <div class="input-group mb-3">
-        <select class="form-control" name="done" id="">
+        <select class="form-control" name="done" id="" required>
           <option value="" disabled selected>Choose Percentage..</option>
           <option value="0">0%</option>
           <option value="10">10%</option>
@@ -121,7 +121,7 @@
       </div>
       <label for="" class="font-weight-bold">File</label>
       <div class="custom-file mb-3">
-        <input type="file" class="custom-file-input" id="customFile" name='file'>
+        <input type="file" class="custom-file-input" id="customFile" name='file' >
         <label class="custom-file-label" for="customFile">Choose file</label>
       </div>
       <button type="submit" class="btn btn-outline-success font-weight-bold">Save</button>
