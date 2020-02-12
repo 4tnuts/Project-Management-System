@@ -14,8 +14,6 @@ module.exports = (pool) => {
     res.render('login');
   });
 
-  // INI UNTUK HASHING PASSWORD NANTI
-
   router.post('/login', (req, res, next) => {
     const input = req.body;
     let dataSession = req.session;

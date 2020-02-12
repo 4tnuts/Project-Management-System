@@ -76,7 +76,7 @@
             <label class="custom-control-label" for="priority3">Urgent</label>
           </div>
           <div class="custom-control custom-radio custom-control-inline">
-            <input type="radio" class="custom-control-input" id="priority4" name="priority" value='Immediate'<%= issues.priority == 'Immidiate' ? 'checked' : '' %>>
+            <input type="radio" class="custom-control-input" id="priority4" name="priority" value='Immediate'<%= issues.priority == 'Immediate' ? 'checked' : '' %>>
             <label class="custom-control-label" for="priority4">Immediate</label>
           </div>
         </div>
@@ -86,7 +86,7 @@
         <select class="form-control" name="assignee" id="">
           <option value="" disabled selected>Choose Assignee..</option>
           <% members.forEach(member => { %>
-            <option value="<%= member.userid %>"><%= member.fullname %></option>
+            <option value="<%= member.userid %>" <%= member.userid == issues.assignee ? 'selected' : ''%>><%= member.fullname %></option>
           <% }) %>
         </select>
       </div>
@@ -107,16 +107,16 @@
         <select class="form-control" name="done" id="">
           <option value="" disabled selected>Choose Percentage..</option>
           <option value="0"  <%= issues.done == 0 ? 'selected' : '' %>>0%</option>
-          <option value="10" <%= issues.done == 0 ? 'selected' : '' %>>10%</option>
-          <option value="20" <%= issues.done == 0 ? 'selected' : '' %>>20%</option>
-          <option value="30" <%= issues.done == 0 ? 'selected' : ''%>>30%</option>
-          <option value="40" <%= issues.done == 0 ? 'selected' : ''%>>40%</option>
-          <option value="50" <%= issues.done == 0 ? 'selected' : ''%>>50%</option>
-          <option value="60" <%= issues.done == 0 ? 'selected' : ''%>>60%</option>
-          <option value="70" <%= issues.done == 0 ? 'selected' : ''%>>70%</option>
-          <option value="80" <%= issues.done == 0 ? 'selected' : ''%>>80%</option>
-          <option value="90" <%= issues.done == 0 ? 'selected' : ''%>>90%</option>
-          <option value="100"<%= issues.done == 0 ? 'selected' : ''%>>100%</option>
+          <option value="10" <%= issues.done == 10 ? 'selected' : '' %>>10%</option>
+          <option value="20" <%= issues.done == 20 ? 'selected' : '' %>>20%</option>
+          <option value="30" <%= issues.done == 30 ? 'selected' : ''%>>30%</option>
+          <option value="40" <%= issues.done == 40 ? 'selected' : ''%>>40%</option>
+          <option value="50" <%= issues.done == 50 ? 'selected' : ''%>>50%</option>
+          <option value="60" <%= issues.done == 60 ? 'selected' : ''%>>60%</option>
+          <option value="70" <%= issues.done == 70 ? 'selected' : ''%>>70%</option>
+          <option value="80" <%= issues.done == 80 ? 'selected' : ''%>>80%</option>
+          <option value="90" <%= issues.done == 90 ? 'selected' : ''%>>90%</option>
+          <option value="100"<%= issues.done == 100 ? 'selected' : ''%>>100%</option>
         </select>
       </div>
       <label for="" class="font-weight-bold">File</label>
@@ -138,13 +138,13 @@
         <select class="form-control" name="parenttask" id="">
           <option value="null" disabled selected>Choose Parent Task..</option>
           <% tasks.forEach(task => { %>
-          <option value="<%= task.issueid %>"> <%= task.subject %>(<%= task.tracker %>)</option>
+          <option value="<%= task.issueid %>" <%= issues.parenttask == task.issueid ? 'selected' : ''%>> <%= task.subject %>(<%= task.tracker %>)</option>
           <% }) %>
         </select>
       </div>
       <button type="submit" class="btn btn-outline-success font-weight-bold">Save</button>
       <a href="/projects/issues/<%= projectid %>" class="btn btn-outline-danger"> Cancel</a>
-      <a href="/projects/issues/<%= projectid %>/add" class="btn btn-warning"> Reset</a>
+      <a href="/projects/issues/<%= projectid %>/<%= issues.issueid %>" class="btn btn-warning"> Reset</a>
     </form>
   </div>
 </body>

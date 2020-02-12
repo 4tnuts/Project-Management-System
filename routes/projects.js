@@ -304,9 +304,7 @@ module.exports = (pool) => {
         const addMember = 'INSERT INTO members (userid, projectid, role) VALUES ($1,$2,$3)'
         const body = [req.body.member, projectid, req.body.position];
         pool.query(addMember, body, (err) => {
-            if (err) throw (err);
-            console.log(addMember)
-            console.log(body)
+            if (err) throw (err)
             res.redirect(`/projects/members/${projectid}/add`)
         })
     })
@@ -317,7 +315,6 @@ module.exports = (pool) => {
         INNER JOIN users ON members.userid = users.userid WHERE members.projectid = $1 AND members.userid = $2`
         pool.query(getMemberData, ids, (err, member) => {
             if (err) throw err;
-            console.log(member.rows[0]);
             res.render('overview/members/edit', {
                 member: member.rows[0],
                 projectid: ids[0]
@@ -343,16 +340,16 @@ module.exports = (pool) => {
         })
     })
 
+    //ISSUES
     router.get('/issues/:id', helpers.isLoggedIn, (req, res, next) => {
         const projectid = [req.params.id];
-        const getIssues = 'SELECT * from issues where projectid = $1'
+        const getIssues = `SELECT i1.*, users.userid, concat(users.firstname, ' ', users.lastname) as fullname, concat(u2.firstname, ' ', u2.lastname) author FROM issues i1 INNER JOIN users ON  users.userid = i1.assignee INNER JOIN users u2 ON i1.author = u2.userid  WHERE projectid = $1;`
         pool.query(getIssues, projectid, (err, data) => {
             let issues = data.rows.map(issue => { 
                 issue.startdate = moment(issue.startdate).format('LL')
                 issue.duedate = moment(issue.duedate).format('LL')
                 return issue;
             })
-            console.log(issues);
             res.render('overview/issues/dashboard', {
                 projectid,
                 issues
@@ -421,17 +418,26 @@ module.exports = (pool) => {
         const issueid = req.params.issueid;
         const projectid = req.params.id;
         const userid = req.session.user.userid;
-        const updateIssue = `UPDATE issues SET tracker = $1, subject = $2, description = $3, status = $4, priority = $5, assignee = $6, duedate = $7, done = $8, 
-                             files = $9, spenttime = $10, targetversion = $11, author = $12, updateddate = NOW(), parenttask = $13 WHERE issueid = $14`;
         const {tracker, subject, description, status, priority, assignee, duedate, done, file, spenttime, targetversion, parenttask} = req.body;
-        console.log(req.body);
+        const updateIssue = `UPDATE issues SET tracker = $1, subject = $2, description = $3, status = $4, priority = $5, assignee = $6, duedate = $7, done = $8, files = $9, spenttime = $10, targetversion = $11, author = $12, updateddate = NOW(), parenttask = $13 WHERE issueid = $14`;
         const issueData = [tracker, subject, description, status, priority, assignee, duedate, done, file, spenttime, targetversion,  userid, parenttask, issueid]
         pool.query(updateIssue, issueData, (err) => {
             if(err) throw err;
             res.redirect(`/projects/issues/${projectid}/edit/${issueid}`);
         })
-        
     })
+
+    router.get('/issues/:id/delete/:issueid', helpers.isLoggedIn, (req, res, next) => {
+        const issueid = req.params.issueid;
+        const projectid = req.params.id;
+        const deleteIssues = `DELETE FROM issues WHERE issueid = $1`;
+        pool.query(deleteIssues, [issueid], (err) => {
+            if(err) throw err;
+            res.redirect(`/projects/issues/${projectid}`)
+        })
+    })
+
+    
 
 
 
