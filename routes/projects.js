@@ -45,7 +45,6 @@ module.exports = (pool) => {
         }
         getData += ') as total';
 
-        console.log(getData)
         pool.query(getData, (err, totalData) => {
             if (err) throw err;
             const total = totalData.rows[0].total;
@@ -60,7 +59,6 @@ module.exports = (pool) => {
 
             getData += ` GROUP BY projects.projectid ORDER BY projectid ASC LIMIT ${limit} OFFSET ${offset}`;
 
-            console.log(getData);
             pool.query(getData, (err, projectData) => {
                 if (err) throw err;
                 let getMembers = `SELECT userid, concat(firstname,' ',lastname) as fullname FROM users WHERE isactive = true`
@@ -69,7 +67,6 @@ module.exports = (pool) => {
                     const getOptions = `SELECT projectopt from users where userid = $1`
                     pool.query(getOptions, id, (err, options) => {
                         if (err) throw err;
-                        console.log(options.rows)
                         res.render('projects/dashboard', result = {
                             projects: projectData.rows,
                             members: members.rows,
@@ -166,8 +163,6 @@ module.exports = (pool) => {
                         insertQuery += `,($1, $${i})`;
                         body = [req.params.id, ...req.body.members];
                     }
-                    console.log(body)
-                    console.log(insertQuery);
                 }
                 pool.query(insertQuery, body, (err) => {
                     if (err) return console.error(err);
@@ -193,10 +188,18 @@ module.exports = (pool) => {
     //OVERVIEW
     router.get('/overview/:id', helpers.isLoggedIn, (req, res, next) => {
         const projectid = req.params.id
-        console.log(projectid)
-        res.render('overview/overview', {
-            projectid
-        });
+        const getIssues = `SELECT issues.tracker, COUNT(CASE WHEN tracker = 'Bug' THEN '' END) totalbug, COUNT(CASE WHEN tracker = 'Feature' THEN '' END) totalfeature, COUNT(CASE WHEN tracker = 'Support' THEN '' END) totalsupport, COUNT(CASE WHEN tracker = 'Bug' AND status != 'Closed' THEN '' END) bugopen, COUNT(CASE WHEN tracker = 'Feature' AND status != 'Closed' THEN '' END) featureopen, COUNT(CASE WHEN tracker = 'Support' AND status != 'Closed' THEN '' END) supportopen FROM issues WHERE projectid= $1 GROUP BY tracker`
+        pool.query(getIssues, [projectid], (err, issues) => {
+            console.log(issues.rows);
+            const getMembers = `SELECT userid, concat(firstname,' ',lastname) AS fullname FROM users WHERE isactive = true AND userid  IN (select users.userid from members inner join users on users.userid = members.userid where members.projectid = $1)`
+            pool.query(getMembers, [projectid], (err, members) => {
+                res.render('overview/overview', {
+                    projectid,
+                    issues : issues.rows,
+                    members: members.rows
+                });
+            })
+        })
     })
 
     //ACTIVITY
@@ -239,7 +242,6 @@ module.exports = (pool) => {
 
         totalData += `) as member`;
 
-        console.log(totalData);
         pool.query(totalData, projectid, (err, members) => {
             if (err) throw err;
             const total = members.rows[0].total;
@@ -252,14 +254,11 @@ module.exports = (pool) => {
             }
 
             getMembers += ` LIMIT ${limit} OFFSET ${offset}`;
-            console.log(getMembers);
 
             pool.query(getMembers, projectid, (err, membersdata) => {
                 if (err) throw (err);
-                console.log(membersdata.rows)
                 const userid = [req.session.user.userid];
                 const getOptions = 'SELECT membersopt from users WHERE userid = $1';
-                console.log(query)
                 pool.query(getOptions, userid, (err, options) => {
                     res.render('overview/members/dashboard', {
                         projectid,
@@ -345,7 +344,7 @@ module.exports = (pool) => {
         const projectid = [req.params.id];
         const getIssues = `SELECT i1.*, users.userid, concat(users.firstname, ' ', users.lastname) as fullname, concat(u2.firstname, ' ', u2.lastname) author FROM issues i1 INNER JOIN users ON  users.userid = i1.assignee INNER JOIN users u2 ON i1.author = u2.userid  WHERE projectid = $1;`
         pool.query(getIssues, projectid, (err, data) => {
-            let issues = data.rows.map(issue => { 
+            let issues = data.rows.map(issue => {
                 issue.startdate = moment(issue.startdate).format('LL')
                 issue.duedate = moment(issue.duedate).format('LL')
                 return issue;
@@ -360,7 +359,6 @@ module.exports = (pool) => {
     router.post('/issues/:id', helpers.isLoggedIn, (req, res, next) => {
         const body = [...req.body];
         const projectid = req.params.id;
-        console.log(body)
         res.redirect('');
     })
 
@@ -368,45 +366,56 @@ module.exports = (pool) => {
         const projectid = req.params.id;
         const getMembers = `SELECT userid, concat(firstname,' ',lastname) as fullname FROM users WHERE isactive = true AND userid IN (select users.userid from members inner join users on users.userid = members.userid where members.projectid = $1)`
         pool.query(getMembers, [projectid], (err, members) => {
-            if(err) throw err;
-        res.render('overview/issues/add', {
-            projectid,
-            members : members.rows
+            if (err) throw err;
+            res.render('overview/issues/add', {
+                projectid,
+                members: members.rows
+            })
         })
-    })
     })
 
     router.post('/issues/:id/add', helpers.isLoggedIn, (req, res, next) => {
         const projectid = req.params.id;
         const authorid = req.session.user.userid;
-            const {tracker, subject, description, status, priority, assignee, startdate, duedate, estimatetime, done, file} = req.body;
-            const addIssues = `INSERT INTO issues (projectid,tracker,subject,description,status,priority,assignee,startdate,duedate,estimatedate,done,files,author,createddate) 
+        const {
+            tracker,
+            subject,
+            description,
+            status,
+            priority,
+            assignee,
+            startdate,
+            duedate,
+            estimatetime,
+            done,
+            file
+        } = req.body;
+        const addIssues = `INSERT INTO issues (projectid,tracker,subject,description,status,priority,assignee,startdate,duedate,estimatedate,done,files,author,createddate) 
                 VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,NOW())`
-            const issuesData = [projectid, tracker, subject, description, status, priority, assignee, startdate, duedate, estimatetime, done, file, authorid]
-            pool.query(addIssues, issuesData, (err) => {
-                if (err) throw err;
-                res.redirect(`/projects/issues/${projectid}/add`);
-            })
+        const issuesData = [projectid, tracker, subject, description, status, priority, assignee, startdate, duedate, estimatetime, done, file, authorid]
+        pool.query(addIssues, issuesData, (err) => {
+            if (err) throw err;
+            res.redirect(`/projects/issues/${projectid}/add`);
         })
+    })
 
     router.get('/issues/:id/edit/:issueid', helpers.isLoggedIn, (req, res, next) => {
         const projectid = req.params.id;
         const issuesid = req.params.issueid;
         const getIssue = 'SELECT * FROM issues WHERE issueid = $1 AND projectid = $2'
         pool.query(getIssue, [issuesid, projectid], (err, issues) => {
-            if(err) throw err;
+            if (err) throw err;
             const getMembers = `SELECT userid, concat(firstname,' ',lastname) as fullname FROM users WHERE isactive = true AND userid IN (select users.userid from members inner join users on users.userid = members.userid where members.projectid = $1)`
             pool.query(getMembers, [projectid], (err, members) => {
-                if(err) throw err;
+                if (err) throw err;
                 const getProjectTasks = 'SELECT issueid, subject, tracker from issues GROUP BY issueid HAVING projectid = $1';
                 pool.query(getProjectTasks, [projectid], (err, tasks) => {
-                    if(err) throw err;
-                    console.log(tasks);
+                    if (err) throw err;
                     res.render('overview/issues/edit', {
                         projectid,
-                        tasks : tasks.rows, 
-                        issues : issues.rows[0],
-                        members : members.rows,
+                        tasks: tasks.rows,
+                        issues: issues.rows[0],
+                        members: members.rows,
                         moment
                     });
                 })
@@ -418,11 +427,24 @@ module.exports = (pool) => {
         const issueid = req.params.issueid;
         const projectid = req.params.id;
         const userid = req.session.user.userid;
-        const {tracker, subject, description, status, priority, assignee, duedate, done, file, spenttime, targetversion, parenttask} = req.body;
+        const {
+            tracker,
+            subject,
+            description,
+            status,
+            priority,
+            assignee,
+            duedate,
+            done,
+            file,
+            spenttime,
+            targetversion,
+            parenttask
+        } = req.body;
         const updateIssue = `UPDATE issues SET tracker = $1, subject = $2, description = $3, status = $4, priority = $5, assignee = $6, duedate = $7, done = $8, files = $9, spenttime = $10, targetversion = $11, author = $12, updateddate = NOW(), parenttask = $13 WHERE issueid = $14`;
-        const issueData = [tracker, subject, description, status, priority, assignee, duedate, done, file, spenttime, targetversion,  userid, parenttask, issueid]
+        const issueData = [tracker, subject, description, status, priority, assignee, duedate, done, file, spenttime, targetversion, userid, parenttask, issueid]
         pool.query(updateIssue, issueData, (err) => {
-            if(err) throw err;
+            if (err) throw err;
             res.redirect(`/projects/issues/${projectid}/edit/${issueid}`);
         })
     })
@@ -432,12 +454,12 @@ module.exports = (pool) => {
         const projectid = req.params.id;
         const deleteIssues = `DELETE FROM issues WHERE issueid = $1`;
         pool.query(deleteIssues, [issueid], (err) => {
-            if(err) throw err;
+            if (err) throw err;
             res.redirect(`/projects/issues/${projectid}`)
         })
     })
 
-    
+
 
 
 
