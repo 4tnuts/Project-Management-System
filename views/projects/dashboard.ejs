@@ -81,8 +81,8 @@
           <% if (options.cpid)    { %><th scope="row"> <a href="/projects/overview/<%= project.projectid %>" class="btn btn-outline-primary"><%= project.projectid %></a></th><% } %>
           <% if (options.cpname)  { %><td><%= project.name%></td><% } %>
             <% if (options.cpmember) { %> <td><%= project.membersname %></td><% } %>
-          <td><a href='/projects/edit/<%= project.projectid %>'class="btn btn-outline-success">Edit</a>&nbsp<a
-              href='/projects/delete/<%= project.projectid %>'class="btn btn-outline-danger">Delete</a></td>
+          <td><a href='/projects/edit/<%= project.projectid %>'class="btn btn-outline-success"><i data-feather="edit"></i></a>&nbsp<a
+              href='/projects/delete/<%= project.projectid %>'class="btn btn-outline-danger"><i data-feather="trash-2"></i></a></td>
         </tr>
       <%});%>
       </tbody>

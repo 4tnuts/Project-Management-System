@@ -177,8 +177,8 @@
           <% if(options.cpfile)         { %>  <td><%= issue.files %></td>                <% } %> 
           <% if(options.cpauthor)       { %>  <td><%= issue.author %></td>               <% } %> 
           <% if(options.cpparenttask)   { %>  <td><%= issue.parenttask %></td>           <% } %> 
-          <td><a href='/projects/issues/<%= issue.projectid %>/edit/<%= issue.issueid %>' class="btn btn-outline-success">Edit</a>&nbsp
-            <a href='/projects/issues/<%= issue.projectid %>/delete/<%= issue.issueid %>' class="btn btn-outline-danger">Delete</a></td>
+          <td><a href='/projects/issues/<%= issue.projectid %>/edit/<%= issue.issueid %>' class="btn btn-outline-success"><i data-feather="edit"></i></a>&nbsp
+            <a href='/projects/issues/<%= issue.projectid %>/delete/<%= issue.issueid %>' class="btn btn-outline-danger"><i data-feather="trash-2"></i></a></td>
         </tr>
       <% }) %>
 

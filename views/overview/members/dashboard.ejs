@@ -79,8 +79,8 @@
           <% if(options.cpid) { %><th scope="row"><%= member.userid%></th><% } %>
           <% if(options.cpname) { %><td><%= member.fullname%></td><% } %>
             <% if(options.cpposition) { %><td><%= member.role == null ? 'No Position' : member.role %></td><% } %>
-          <td><a href='/projects/members/<%= projectid %>/edit/<%= member.userid %>'class="btn btn-outline-success">Edit</a>&nbsp<a
-              href='/projects/members/<%= projectid %>/delete/<%= member.userid %>'class="btn btn-outline-danger">Delete</a></td>
+          <td><a href='/projects/members/<%= projectid %>/edit/<%= member.userid %>'class="btn btn-outline-success"><i data-feather="edit"></i></a>&nbsp<a
+              href='/projects/members/<%= projectid %>/delete/<%= member.userid %>'class="btn btn-outline-danger"><i data-feather="trash-2"></i></a></td>
         </tr>
 
       <% }) %>
