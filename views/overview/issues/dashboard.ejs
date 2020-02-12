@@ -65,67 +65,67 @@
       <a href="/projects/issues/<%= projectid %>" class="btn btn-warning"> Reset</a>
     </form>
     <hr>
-    <form action="/" method="post">
+    <form action="/projects/issues/<%= projectid %>" method="post">
       <p class="font-weight-bold">Options</p>
       <div class="input-group mb-3 text-center">
         <div class="input-group-prepend">
           <div class="custom-control custom-checkbox custom-control-inline">
-            <input type="checkbox" name="cpid" value="" class="custom-control-input" id="options1" checked>
+            <input type="checkbox" name="cpid" value="true" class="custom-control-input" id="options1" <%= options.cpid == 'true' ? 'checked' : '' %>>
             <label class="custom-control-label" for="options1">ID</label>
           </div>
           <div class="custom-control custom-checkbox custom-control-inline">
-            <input type="checkbox" name="cptracker"  value="" class="custom-control-input" id="options2" checked>
+            <input type="checkbox" name="cptracker"  value="true" class="custom-control-input" id="options2" <%= options.cptracker == 'true' ? 'checked' : '' %>>
             <label class="custom-control-label" for="options2">Tracker</label>
           </div>
           <div class="custom-control custom-checkbox custom-control-inline">
-            <input type="checkbox" name="cpsubject" value="" class="custom-control-input" id="options3" checked>
+            <input type="checkbox" name="cpsubject" value="true" class="custom-control-input" id="options3" <%= options.cpsubject == 'true' ? 'checked' : '' %>>
             <label class="custom-control-label" for="options3">Subject</label>
           </div>
           <div class="custom-control custom-checkbox custom-control-inline">
-            <input type="checkbox" name="cpdescription" value="" class="custom-control-input" id="options4" checked>
+            <input type="checkbox" name="cpdescription" value="true" class="custom-control-input" id="options4" <%= options.cpdescription == 'true' ? 'checked' : '' %>>
             <label class="custom-control-label" for="options4">Description</label>
           </div>
           <div class="custom-control custom-checkbox custom-control-inline">
-            <input type="checkbox" name="cpstatus" value="" class="custom-control-input" id="options5" checked>
+            <input type="checkbox" name="cpstatus" value="true" class="custom-control-input" id="options5" <%= options.cpstatus == 'true' ? 'checked' : '' %>>
             <label class="custom-control-label" for="options5">Status</label>
           </div>
           <div class="custom-control custom-checkbox custom-control-inline">
-            <input type="checkbox" name="cpprio" value="" class="custom-control-input" id="options6" checked>
+            <input type="checkbox" name="cpprio" value="true" class="custom-control-input" id="options6" <%= options.cpprio == 'true' ? 'checked' : '' %>>
             <label class="custom-control-label" for="options6">Priority</label>
           </div>
           <div class="custom-control custom-checkbox custom-control-inline">
-            <input type="checkbox" name="cpassignee" value="" class="custom-control-input" id="options7" checked>
+            <input type="checkbox" name="cpassignee" value="true" class="custom-control-input" id="options7" <%= options.cpassignee == 'true' ? 'checked' : '' %>>
             <label class="custom-control-label" for="options7">Assignee</label>
           </div>
         </div>
         <div class="input-group mb-3 mt-2 text-center">
             <div class="input-group-prepend">
               <div class="custom-control custom-checkbox custom-control-inline">
-                <input type="checkbox" name="cpstartdate" value="" class="custom-control-input" id="options8" checked>
+                <input type="checkbox" name="cpstartdate" value="true" class="custom-control-input" id="options8" <%= options.cpstartdate == 'true' ? 'checked' : '' %>>
                 <label class="custom-control-label" for="options8">Start Date</label>
               </div>
               <div class="custom-control custom-checkbox custom-control-inline ">
-                <input type="checkbox" name="cpduedate" value="" class="custom-control-input" id="options9" checked>
+                <input type="checkbox" name="cpduedate" value="true" class="custom-control-input" id="options9" <%= options.cpduedate == 'true' ? 'checked' : '' %>>
                 <label class="custom-control-label" for="options9">Due Date</label>
               </div>
               <div class="custom-control custom-checkbox custom-control-inline">
-                <input type="checkbox" name="cpestimatetime" value="" class="custom-control-input" id="options10" checked>
+                <input type="checkbox" name="cpestimatetime" value="true" class="custom-control-input" id="options10" <%= options.cpestimatetime == 'true' ? 'checked' : '' %>>
                 <label class="custom-control-label" for="options10">Estimated Time</label>
               </div>
               <div class="custom-control custom-checkbox custom-control-inline">
-                <input type="checkbox" name="cdpdone" value="" class="custom-control-input" id="options11" checked>
+                <input type="checkbox" name="cdpdone" value="true" class="custom-control-input" id="options11" <%= options.cdpdone == 'true' ? 'checked' : '' %>>
                 <label class="custom-control-label" for="options11">Done</label>
               </div>
               <div class="custom-control custom-checkbox custom-control-inline">
-                <input type="checkbox" name="cpfile" value="" class="custom-control-input" id="options12" checked>
+                <input type="checkbox" name="cpfile" value="true" class="custom-control-input" id="options12" <%= options.cpfile == 'true' ? 'checked' : '' %>>
                 <label class="custom-control-label" for="options12">File</label>
               </div>
               <div class="custom-control custom-checkbox custom-control-inline">
-                <input type="checkbox" name="cpauthor" value="" class="custom-control-input" id="options15" checked>
+                <input type="checkbox" name="cpauthor" value="true" class="custom-control-input" id="options15" <%= options.cpauthor == 'true' ? 'checked' : '' %>>
                 <label class="custom-control-label" for="options15">Author</label>
               </div>
               <div class="custom-control custom-checkbox custom-control-inline">
-                <input type="checkbox" name="cpparenttask" value="" class="custom-control-input" id="options19" checked>
+                <input type="checkbox" name="cpparenttask" value="true" class="custom-control-input" id="options19" <%= options.cpparenttask == 'true' ? 'checked' : '' %>>
                 <label class="custom-control-label" for="options19">Parent Task</label>
               </div><br>
             </div>
@@ -143,40 +143,40 @@
 
       <thead>
         <tr>
-          <th scope="col">ID</th>
-          <th scope="col">Tracker</th>
-          <th scope="col">Subject</th>
-          <th scope="col">Description</th>
-          <th scope="col">Status</th>
-          <th scope="col">Priority</th>
-          <th scope="col">Assigne</th>
-          <th scope="col">Start Date</th>
-          <th scope="col">Due Date</th>
-          <th scope="col">Estimated Time</th>
-          <th scope="col">Done</th>
-          <th scope="col">File</th>
-          <th scope="col">Author</th>
-          <th scope="col">Parent Task</th>
+          <% if(options.cpid)           { %> <th scope="col">ID</th>              <% } %>
+          <% if(options.cptracker)      { %> <th scope="col">Tracker</th>         <% } %>
+          <% if(options.cpsubject)      { %> <th scope="col">Subject</th>         <% } %>
+          <% if(options.cpdescription)  { %> <th scope="col">Description</th>     <% } %>
+          <% if(options.cpstatus)       { %> <th scope="col">Status</th>          <% } %>
+          <% if(options.cpprio)         { %> <th scope="col">Priority</th>        <% } %>
+          <% if(options.cpassignee)     { %> <th scope="col">Assigne</th>         <% } %>
+          <% if(options.cpstartdate)    { %> <th scope="col">Start Date</th>      <% } %>
+          <% if(options.cpduedate)      { %> <th scope="col">Due Date</th>        <% } %>
+          <% if(options.cpestimatetime) { %> <th scope="col">Estimated Time</th>  <% } %>
+          <% if(options.cdpdone)        { %> <th scope="col">Done</th>            <% } %>
+          <% if(options.cpfile)         { %> <th scope="col">File</th>            <% } %>
+          <% if(options.cpauthor)       { %> <th scope="col">Author</th>          <% } %>
+          <% if(options.cpparenttask)   { %> <th scope="col">Parent Task</th>     <% } %>
           <th scope="col">Actions</th>
         </tr>
       </thead>
       <tbody>
        <% issues.forEach(issue => { %>
         <tr>
-          <th scope="row"><%= issue.issueid %></td>
-          <td><%= issue.tracker %></td>
-          <td><%= issue.subject %></td>
-          <td><%= issue.description %></td>
-          <td><%= issue.status %></td>
-          <td><%= issue.priority %></td>
-          <td><%= issue.fullname %></td>
-          <td><%= issue.startdate %></td>
-          <td><%= issue.duedate %></td>
-          <td><%= issue.estimatedate %></td>
-          <td><%= issue.done %>%</td>
-          <td><%= issue.files %></td>
-          <td><%= issue.author %></td>
-          <td><%= issue.parenttask %></td>
+          <% if(options.cpid)           { %>  <th scope="row"><%= issue.issueid %></td>  <% } %> 
+          <% if(options.cptracker)      { %>  <td><%= issue.tracker %></td>              <% } %> 
+          <% if(options.cpsubject)      { %>  <td><%= issue.subject %></td>              <% } %> 
+          <% if(options.cpdescription)  { %>  <td><%= issue.description %></td>          <% } %> 
+          <% if(options.cpstatus)       { %>  <td><%= issue.status %></td>               <% } %> 
+          <% if(options.cpprio)         { %>  <td><%= issue.priority %></td>             <% } %> 
+          <% if(options.cpassignee)     { %>  <td><%= issue.fullname %></td>             <% } %> 
+          <% if(options.cpstartdate)    { %>  <td><%= issue.startdate %></td>            <% } %> 
+          <% if(options.cpduedate)      { %>  <td><%= issue.duedate %></td>              <% } %> 
+          <% if(options.cpestimatetime) { %>  <td><%= issue.estimatedate %></td>         <% } %> 
+          <% if(options.cdpdone)        { %>  <td><%= issue.done %>%</td>                <% } %> 
+          <% if(options.cpfile)         { %>  <td><%= issue.files %></td>                <% } %> 
+          <% if(options.cpauthor)       { %>  <td><%= issue.author %></td>               <% } %> 
+          <% if(options.cpparenttask)   { %>  <td><%= issue.parenttask %></td>           <% } %> 
           <td><a href='/projects/issues/<%= issue.projectid %>/edit/<%= issue.issueid %>' class="btn btn-outline-success">Edit</a>&nbsp
             <a href='/projects/issues/<%= issue.projectid %>/delete/<%= issue.issueid %>' class="btn btn-outline-danger">Delete</a></td>
         </tr>
@@ -184,23 +184,23 @@
 
       </tbody>
     </table>
-    <nav aria-label="Page navigation example">
-      <ul class="pagination justify-content-center">
-        <li class="page-item <%= currentPage <= 1 ? 'disabled' : ''%>">
-          <a class="page-link" href="<%=url.replace(`page=${currentPage}`,`page=${parseInt(currentPage) - 1}`)%>"
-            tabindex="-1" aria-disabled="true">Previous</a>
-        </li>
-        <% for(let i = 1; i <= totalPages; i++){ %>
-        <li class="page-item <%= currentPage == i ? 'active':''%>"><a class="page-link"
-            href="<%=url.replace(`page=${currentPage}`,`page=${i}`)%>"><%= i %></a></li>
-        <% } %>
-        <li class="page-item <%= currentPage >= totalPages ? 'disabled' : ''%>">
-          <a class="page-link"
-            href="<%=url.replace(`page=${currentPage}`,`page=${parseInt(currentPage) + 1}`)%>">Next</a>
-        </li>
-      </ul>
-    </nav>
   </div>
+  <nav aria-label="Page navigation example" class="mt-4">
+    <ul class="pagination justify-content-center">
+      <li class="page-item <%= currentPage <= 1 ? 'disabled' : ''%>">
+        <a class="page-link" href="<%=url.replace(`page=${currentPage}`,`page=${parseInt(currentPage) - 1}`)%>"
+          tabindex="-1" aria-disabled="true">Previous</a>
+      </li>
+      <% for(let i = 1; i <= totalPages; i++){ %>
+      <li class="page-item <%= currentPage == i ? 'active':''%>"><a class="page-link"
+          href="<%=url.replace(`page=${currentPage}`,`page=${i}`)%>"><%= i %></a></li>
+      <% } %>
+      <li class="page-item <%= currentPage >= totalPages ? 'disabled' : ''%>">
+        <a class="page-link"
+          href="<%=url.replace(`page=${currentPage}`,`page=${parseInt(currentPage) + 1}`)%>">Next</a>
+      </li>
+    </ul>
+  </nav>
   </div>
 </body>
 <%- include('../../partials/footer'); %>

@@ -191,7 +191,6 @@ module.exports = (pool) => {
         const getIssues = `SELECT root.tracker, count(root.issueid) as total, (SELECT count(*) from issues WHERE projectid = $1 AND status != 'Closed' and tracker = root.tracker) as totalopen from issues as root WHERE projectid = $1 GROUP BY tracker`
         pool.query(getIssues, [projectid], (err, issues) => {
             if(err) throw err;
-            console.log(issues.rows)
             const getMembers = `SELECT userid, concat(firstname,' ',lastname) AS fullname FROM users WHERE isactive = true AND userid  IN (select users.userid from members inner join users on users.userid = members.userid where members.projectid = $1)`
             pool.query(getMembers, [projectid], (err, members) => {
                 res.render('overview/overview', {
@@ -372,16 +371,11 @@ module.exports = (pool) => {
             if(input.cfdone && input.done){
                 queries.push(`done = ${input.done}`);
             }
-        console.log(input);
-
         if(queries.length > 0){
             getIssues +=` AND ${queries.join(' AND ')}`;
         }
 
         getIssues += `) as total`;
-        console.log(getIssues);
-        console.log(queries);
-        console.log(input)
         pool.query(getIssues, (err, totalIssues) => {
             if(err) throw err;
             const total = totalIssues.rows[0].totaldata;
@@ -391,33 +385,39 @@ module.exports = (pool) => {
                 getIssues +=` AND ${queries.join(' AND ')}`;
             }
             getIssues += ` LIMIT ${limit} OFFSET ${offset}`;
-            console.log(totalIssues.rows)
-            console.log(getIssues)
-            console.log(queries);
             pool.query(getIssues, (err, issuesData) => {
-                console.log(getIssues);
                 if(err) throw err;
                 let issues = issuesData.rows.map(issue => {
                     issue.startdate = moment(issue.startdate).format('LL')
                     issue.duedate = moment(issue.duedate).format('LL')
                     return issue;
                 })
-                res.render('overview/issues/dashboard', {
-                    projectid,
-                    issues,
-                    input,
-                    currentPage,
-                    totalPages,
-                    url
-                });
+                const getIssuesOpt = `SELECT issuesopt from users where userid = $1`;
+                const userid = [req.session.user.userid]
+                pool.query(getIssuesOpt, userid, (err, options) => {
+                    res.render('overview/issues/dashboard', {
+                        projectid,
+                        issues,
+                        input,
+                        currentPage,
+                        totalPages,
+                        url,
+                        options: options.rows[0].issuesopt
+                    });
+                })
             })
         })
     })
 
     router.post('/issues/:id', helpers.isLoggedIn, (req, res, next) => {
-        const body = [...req.body];
-        const projectid = req.params.id;
-        res.redirect('');
+        const updateOptions = `UPDATE users SET issuesopt = $1 WHERE userid = $2`;
+        const data = [{
+            ...req.body
+        }, req.session.user.userid];
+        pool.query(updateOptions, data, (err) => {
+            if (err) throw err;
+            res.redirect(`/projects/issues/${req.params.id}`);
+        })
     })
 
     router.get('/issues/:id/add', helpers.isLoggedIn, (req, res, next) => {
