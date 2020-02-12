@@ -188,15 +188,16 @@ module.exports = (pool) => {
     //OVERVIEW
     router.get('/overview/:id', helpers.isLoggedIn, (req, res, next) => {
         const projectid = req.params.id
-        const getIssues = `SELECT issues.tracker, COUNT(CASE WHEN tracker = 'Bug' THEN '' END) totalbug, COUNT(CASE WHEN tracker = 'Feature' THEN '' END) totalfeature, COUNT(CASE WHEN tracker = 'Support' THEN '' END) totalsupport, COUNT(CASE WHEN tracker = 'Bug' AND status != 'Closed' THEN '' END) bugopen, COUNT(CASE WHEN tracker = 'Feature' AND status != 'Closed' THEN '' END) featureopen, COUNT(CASE WHEN tracker = 'Support' AND status != 'Closed' THEN '' END) supportopen FROM issues WHERE projectid= $1 GROUP BY tracker`
+        const getIssues = `SELECT root.tracker, count(root.issueid) as total, (SELECT count(*) from issues WHERE projectid = $1 AND status != 'Closed' and tracker = root.tracker) as totalopen from issues as root WHERE projectid = $1 GROUP BY tracker`
         pool.query(getIssues, [projectid], (err, issues) => {
-            console.log(issues.rows);
+            if(err) throw err;
+            console.log(issues.rows)
             const getMembers = `SELECT userid, concat(firstname,' ',lastname) AS fullname FROM users WHERE isactive = true AND userid  IN (select users.userid from members inner join users on users.userid = members.userid where members.projectid = $1)`
             pool.query(getMembers, [projectid], (err, members) => {
                 res.render('overview/overview', {
                     projectid,
                     issues : issues.rows,
-                    members: members.rows
+                    members : members.rows
                 });
             })
         })
@@ -341,18 +342,60 @@ module.exports = (pool) => {
 
     //ISSUES
     router.get('/issues/:id', helpers.isLoggedIn, (req, res, next) => {
-        const projectid = [req.params.id];
-        const getIssues = `SELECT i1.*, users.userid, concat(users.firstname, ' ', users.lastname) as fullname, concat(u2.firstname, ' ', u2.lastname) author FROM issues i1 INNER JOIN users ON  users.userid = i1.assignee INNER JOIN users u2 ON i1.author = u2.userid  WHERE projectid = $1;`
-        pool.query(getIssues, projectid, (err, data) => {
-            let issues = data.rows.map(issue => {
-                issue.startdate = moment(issue.startdate).format('LL')
-                issue.duedate = moment(issue.duedate).format('LL')
-                return issue;
+        const projectid = req.params.id;
+        let getIssues = `select count(total) as totalData from (SELECT i1.*, users.userid, concat(users.firstname, ' ', users.lastname) as fullname, concat(u2.firstname, ' ', u2.lastname) author FROM issues i1 INNER JOIN users ON  users.userid = i1.assignee INNER JOIN users u2 ON i1.author = u2.userid  WHERE projectid = ${projectid}`
+        const input = req.query;
+        let queries = [];
+        
+            if(input.cfid && input.id){
+                queries.push(`issueid = ${input.id}`);
+            } 
+            
+            if(input.cfsubject && input.subject){
+                queries.push(`subject ILIKE '%${input.subject}%'`);
+            }
+
+            if(input.cftracker && input.tracker){
+                queries.push(`tracker = '${input.tracker}'`);
+            }
+
+            if(input.cfdone && input.done){
+                queries.push(`done = ${input.done}`);
+            }
+        console.log(input);
+
+        if(queries.length > 0){
+            getIssues +=` AND ${queries.join(' AND ')}`;
+        }
+
+        getIssues += `) as total`;
+        console.log(getIssues);
+        console.log(queries);
+        console.log(input)
+        pool.query(getIssues, (err, totalIssues) => {
+            if(err) throw err;
+            getIssues = `SELECT i1.*, users.userid, concat(users.firstname, ' ', users.lastname) as fullname, concat(u2.firstname, ' ', u2.lastname) author FROM issues i1 INNER JOIN users ON  users.userid = i1.assignee INNER JOIN users u2 ON i1.author = u2.userid  WHERE projectid = ${projectid}`
+            if(queries.length > 0){
+                getIssues +=` AND ${queries.join(' AND ')}`;
+            }
+            
+            console.log(totalIssues.rows)
+            console.log(getIssues)
+            console.log(queries);
+            pool.query(getIssues, (err, issuesData) => {
+                console.log(getIssues);
+                if(err) throw err;
+                let issues = issuesData.rows.map(issue => {
+                    issue.startdate = moment(issue.startdate).format('LL')
+                    issue.duedate = moment(issue.duedate).format('LL')
+                    return issue;
+                })
+                res.render('overview/issues/dashboard', {
+                    projectid,
+                    issues,
+                    input
+                });
             })
-            res.render('overview/issues/dashboard', {
-                projectid,
-                issues
-            });
         })
     })
 
