@@ -23,9 +23,9 @@ module.exports = (pool) => {
         let url = req.originalUrl;
         if (!url.includes("page")) {
             url = url.includes("?") ?
-                url.replace("?", `?page=${currentPage}&`) :
-                `${url}?page=${currentPage}`;
-        }
+              url.replace("?", `?page=${currentPage}&`) :
+              `${url}?page=${currentPage}`;
+          }
 
         if (query.cfid && query.id) {
             queries.push(`projects.projectid = ${query.id}`);
@@ -220,9 +220,11 @@ module.exports = (pool) => {
         const offset = (currentPage - 1) * limit
         const query = req.query;
         const queries = [];
-        if (!url.includes('?page')) {
-            url = url.includes('?') ? url.replace(`?page=${currentPage}&`) : url.replace(`${url}?page=${currentPage}`);
-        }
+        if (!url.includes("page")) {
+            url = url.includes("?") ?
+              url.replace("?", `?page=${currentPage}&`) :
+              `${url}?page=${currentPage}`;
+          }
         let totalData = `SELECT COUNT(member) as total  FROM (SELECT members.userid FROM members JOIN users ON members.userid = users.userid WHERE members.projectid = $1`
 
         if (query.cfid && query.id) {
@@ -344,9 +346,17 @@ module.exports = (pool) => {
     router.get('/issues/:id', helpers.isLoggedIn, (req, res, next) => {
         const projectid = req.params.id;
         let getIssues = `select count(total) as totalData from (SELECT i1.*, users.userid, concat(users.firstname, ' ', users.lastname) as fullname, concat(u2.firstname, ' ', u2.lastname) author FROM issues i1 INNER JOIN users ON  users.userid = i1.assignee INNER JOIN users u2 ON i1.author = u2.userid  WHERE projectid = ${projectid}`
+        let url = req.originalUrl;
         const input = req.query;
+        const currentPage = req.query.page || 1;
         let queries = [];
-        
+        const limit = 5;
+        const offset = (currentPage - 1) * limit;
+        if (!url.includes("page")) {
+            url = url.includes("?") ?
+              url.replace("?", `?page=${currentPage}&`) :
+              `${url}?page=${currentPage}`;
+          }
             if(input.cfid && input.id){
                 queries.push(`issueid = ${input.id}`);
             } 
@@ -374,11 +384,13 @@ module.exports = (pool) => {
         console.log(input)
         pool.query(getIssues, (err, totalIssues) => {
             if(err) throw err;
+            const total = totalIssues.rows[0].totaldata;
+            const totalPages = Math.ceil(total / limit);
             getIssues = `SELECT i1.*, users.userid, concat(users.firstname, ' ', users.lastname) as fullname, concat(u2.firstname, ' ', u2.lastname) author FROM issues i1 INNER JOIN users ON  users.userid = i1.assignee INNER JOIN users u2 ON i1.author = u2.userid  WHERE projectid = ${projectid}`
             if(queries.length > 0){
                 getIssues +=` AND ${queries.join(' AND ')}`;
             }
-            
+            getIssues += ` LIMIT ${limit} OFFSET ${offset}`;
             console.log(totalIssues.rows)
             console.log(getIssues)
             console.log(queries);
@@ -393,7 +405,10 @@ module.exports = (pool) => {
                 res.render('overview/issues/dashboard', {
                     projectid,
                     issues,
-                    input
+                    input,
+                    currentPage,
+                    totalPages,
+                    url
                 });
             })
         })
