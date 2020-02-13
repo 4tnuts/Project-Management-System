@@ -205,9 +205,19 @@ module.exports = (pool) => {
     //ACTIVITY
     router.get('/activity/:id', helpers.isLoggedIn, (req, res, next) => {
         const projectid = req.params.id
-        res.render('overview/activity', {
-            projectid
-        });
+        const getActivity = `select to_char(activity.time, 'DD-MM-YYYY') as tanggal , activity.description, projects.name, issues.issueid, issues.status, issues.subject, to_char(issues.startdate, 'DD-MM-YYYY') as startdate, to_char(issues.duedate, 'DD-MM-YYYY') as duedate, users.firstname, to_char(time, 'HH24:MI') as clocktime, CASE WHEN date(time) = CURRENT_DATE THEN 'Today' ELSE to_char(time, 'Day') END as day  from  activity INNER JOIN projects ON  projects.projectid = activity.projectid INNER JOIN issues ON issues.issueid = activity.issueid INNER JOIN users ON users.userid = activity.author where activity.projectid = $1 ORDER BY time desc`
+        const getDate  = `select distinct to_char(time, 'DD-MM-YYYY') as date from activity where projectid = $1`;
+        pool.query(getDate, [projectid], (err, dates) => {
+            if(err) throw err;
+            console.log(dates.rows);
+            pool.query(getActivity, [projectid], (err, activities) => {
+                if(err) throw err;
+                res.render('overview/activity', {
+                    activities: activities.rows,
+                    projectid
+                });
+        })
+        })
     })
 
     //MEMBERS
@@ -411,12 +421,13 @@ module.exports = (pool) => {
 
     router.post('/issues/:id', helpers.isLoggedIn, (req, res, next) => {
         const updateOptions = `UPDATE users SET issuesopt = $1 WHERE userid = $2`;
+        const projectid = req.params.id;
         const data = [{
             ...req.body
         }, req.session.user.userid];
         pool.query(updateOptions, data, (err) => {
             if (err) throw err;
-            res.redirect(`/projects/issues/${req.params.id}`);
+            res.redirect(`/projects/issues/${projectid}`);
         })
     })
 
@@ -503,7 +514,12 @@ module.exports = (pool) => {
         const issueData = [tracker, subject, description, status, priority, assignee, duedate, done, file, spenttime, targetversion, userid, parenttask, issueid]
         pool.query(updateIssue, issueData, (err) => {
             if (err) throw err;
-            res.redirect(`/projects/issues/${projectid}/edit/${issueid}`);
+            const recordActivity = `INSERT INTO activity (projectid, time, title, description, author, issueid) VALUES($1, now(), $2, $3, $4, $5)`
+            const activityData = [projectid, subject, description, userid, issueid];
+            pool.query(recordActivity, activityData, (err) => {
+                if(err) throw err;
+                res.redirect(`/projects/issues/${projectid}/edit/${issueid}`);
+            })
         })
     })
 

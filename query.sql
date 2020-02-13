@@ -16,3 +16,6 @@ SELECT DISTINCT concat(users.firstname || ' ' || users.lastname)as fullname from
 -- GET total member in project
 select count(data) as total from  (select members.userid, members.role, CONCAT(users.firstname,' ', users.lastname) AS fullname from members 
 INNER JOIN users ON members.userid = users.userid where members.projectid = 6)as data;
+
+-- dapet date
+select *, CASE WHEN date(time) = CURRENT_DATE THEN 'Today' ELSE to_char(time, 'Day') END as day  from activity where date(time) = CURRENT_DATE ORDER BY time desc;
