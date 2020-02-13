@@ -405,6 +405,7 @@ module.exports = (pool) => {
                 const getIssuesOpt = `SELECT issuesopt from users where userid = $1`;
                 const userid = [req.session.user.userid]
                 pool.query(getIssuesOpt, userid, (err, options) => {
+                    if(err) throw err;
                     res.render('overview/issues/dashboard', {
                         projectid,
                         issues,
@@ -460,13 +461,13 @@ module.exports = (pool) => {
             file
         } = req.body;
         const addIssues = `INSERT INTO issues (projectid,tracker,subject,description,status,priority,assignee,startdate,duedate,estimatedate,done,files,author,createddate) 
-                VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,NOW())`
+                           VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,NOW())`
         const issuesData = [projectid, tracker, subject, description, status, priority, assignee, startdate, duedate, estimatetime, done, file, authorid]
-        pool.query(addIssues, issuesData, (err) => {
-            if (err) throw err;
-            res.redirect(`/projects/issues/${projectid}/add`);
-        })
-    })
+              pool.query(addIssues, issuesData, (err) => {
+                if (err) throw err;
+                res.redirect(`/projects/issues/${projectid}/add`);
+            })
+          });
 
     router.get('/issues/:id/edit/:issueid', helpers.isLoggedIn, (req, res, next) => {
         const projectid = req.params.id;

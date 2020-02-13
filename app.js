@@ -6,7 +6,7 @@ const express = require('express');
 const logger = require('morgan');
 const { Pool } = require('pg');
 const path = require('path');
-
+const fileUpload = require('express-fileupload');
 const pool = new Pool({
   user : 'postgres',
   host : 'localhost',
@@ -28,6 +28,7 @@ const app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+app.use(fileUpload());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
