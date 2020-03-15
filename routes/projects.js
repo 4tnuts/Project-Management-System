@@ -11,10 +11,12 @@ router.use(bodyParser.urlencoded({
 router.use(bodyParser.json());
 
 module.exports = (pool) => {
-    router.get('/', helpers.isLoggedIn, (req, res, next) => {
+    router.get('/', (req, res, next) => {
+        console.log('masuk euy')
         let getData = `SELECT count(id) as total from (SELECT DISTINCT projects.projectid as id FROM projects LEfT JOIN members ON members.projectid = projects.projectid
         LEFT JOIN users ON users.userid = members.userid `
         let queries = [];
+        const { isadmin }  = req.session.user;
         const query = req.query;
         const currentPage = req.query.page || 1;
         const limit = 5;
@@ -73,6 +75,7 @@ module.exports = (pool) => {
                             query,
                             totalPages,
                             url,
+                            isadmin,
                             currentPage,
                             options: options.rows[0].projectopt
                         });
@@ -83,7 +86,7 @@ module.exports = (pool) => {
         })
     });
 
-    router.post('/', helpers.isLoggedIn, (req, res, next) => {
+    router.post('/',  (req, res, next) => {
         const updateOptions = `UPDATE users SET projectopt = $1 WHERE userid = $2`;
         const data = [{
             ...req.body
@@ -94,7 +97,7 @@ module.exports = (pool) => {
         })
     })
 
-    router.get('/add', helpers.isLoggedIn, (req, res, next) => {
+    router.get('/add',  (req, res, next) => {
         let getMembers = `SELECT userid, concat(firstname,' ',lastname) as fullname FROM users WHERE isactive = true`
         pool.query(getMembers, (err, member) => {
             res.render('projects/add', result = {
@@ -103,7 +106,7 @@ module.exports = (pool) => {
         })
     })
 
-    router.post('/add', helpers.isLoggedIn, (req, res, next) => {
+    router.post('/add',  (req, res, next) => {
         let insertQuery = 'with new_project as ( INSERT INTO projects(name) VALUES($1) returning projectid ) INSERT INTO members(userid, projectid) VALUES ($2, (select projectid from new_project))';
         let body = [];
         if (req.body.members == undefined) {
@@ -124,7 +127,7 @@ module.exports = (pool) => {
         })
     })
 
-    router.get('/edit/:id', helpers.isLoggedIn, (req, res, next) => {
+    router.get('/edit/:id',  (req, res, next) => {
         const getUser = `SELECT userid, concat(firstname,' ',lastname) as fullname FROM users WHERE isactive = true`
         const id = [req.params.id];
         pool.query(getUser, (err, users) => {
@@ -142,7 +145,7 @@ module.exports = (pool) => {
         })
     })
 
-    router.post('/edit/:id', helpers.isLoggedIn, (req, res, err) => {
+    router.post('/edit/:id',  (req, res, err) => {
         let updateProject = 'UPDATE projects SET name = $1 WHERE projectid = $2'
         let body = [req.body.name, req.params.id];
         pool.query(updateProject, body, (err) => {
@@ -172,7 +175,7 @@ module.exports = (pool) => {
         });
     })
 
-    router.get('/delete/:id', helpers.isLoggedIn, (req, res, next) => {
+    router.get('/delete/:id',  (req, res, next) => {
         let deleteProject = 'DELETE FROM members WHERE projectid = $1';
         const id = [req.params.id];
         pool.query(deleteProject, id, (err) => {
@@ -186,7 +189,7 @@ module.exports = (pool) => {
     })
 
     //OVERVIEW
-    router.get('/overview/:id', helpers.isLoggedIn, (req, res, next) => {
+    router.get('/overview/:id',  (req, res, next) => {
         const projectid = req.params.id
         const getIssues = `SELECT root.tracker, count(root.issueid) as total, (SELECT count(*) from issues WHERE projectid = $1 AND status != 'Closed' and tracker = root.tracker) as totalopen from issues as root WHERE projectid = $1 GROUP BY tracker`
         pool.query(getIssues, [projectid], (err, issues) => {
@@ -203,7 +206,7 @@ module.exports = (pool) => {
     })
 
     //ACTIVITY
-    router.get('/activity/:id', helpers.isLoggedIn, (req, res, next) => {
+    router.get('/activity/:id',  (req, res, next) => {
         const projectid = req.params.id
         const getActivity = `select to_char(activity.time, 'DD-MM-YYYY') as tanggal , activity.description, projects.name, issues.issueid, issues.status, issues.subject, to_char(issues.startdate, 'DD-MM-YYYY') as startdate, to_char(issues.duedate, 'DD-MM-YYYY') as duedate, users.firstname, to_char(time, 'HH24:MI') as clocktime, CASE WHEN date(time) = CURRENT_DATE THEN 'Today' ELSE to_char(time, 'Day') END as day  from  activity INNER JOIN projects ON  projects.projectid = activity.projectid INNER JOIN issues ON issues.issueid = activity.issueid INNER JOIN users ON users.userid = activity.author where activity.projectid = $1 ORDER BY time desc`
         const getDate = `select distinct to_char(time, 'DD-MM-YYYY') as date from activity where projectid = $1`;
@@ -221,7 +224,7 @@ module.exports = (pool) => {
     })
 
     //MEMBERS
-    router.get('/members/:id', helpers.isLoggedIn, (req, res, next) => {
+    router.get('/members/:id',  (req, res, next) => {
         const projectid = [req.params.id]
         let url = req.originalUrl;
         const currentPage = req.query.page || 1;
@@ -288,7 +291,7 @@ module.exports = (pool) => {
 
     })
 
-    router.post('/members/:id', helpers.isLoggedIn, (req, res, next) => {
+    router.post('/members/:id',  (req, res, next) => {
         const updateOptions = `UPDATE users SET membersopt = $1 WHERE userid = $2`;
         const data = [{
             ...req.body
@@ -299,7 +302,7 @@ module.exports = (pool) => {
         })
     })
 
-    router.get('/members/:id/add', helpers.isLoggedIn, (req, res, next) => {
+    router.get('/members/:id/add',  (req, res, next) => {
         const projectid = req.params.id;
         const getUser = `SELECT userid, concat(firstname,' ',lastname) as fullname FROM users WHERE isactive = true AND userid NOT IN (select users.userid from members inner join users on users.userid = members.userid where members.projectid = $1)`
         pool.query(getUser, [projectid], (err, users) => {
@@ -311,7 +314,7 @@ module.exports = (pool) => {
         })
     })
 
-    router.post('/members/:id/add', helpers.isLoggedIn, (req, res, next) => {
+    router.post('/members/:id/add',  (req, res, next) => {
         const projectid = req.params.id
         const addMember = 'INSERT INTO members (userid, projectid, role) VALUES ($1,$2,$3)'
         const body = [req.body.member, projectid, req.body.position];
@@ -321,7 +324,7 @@ module.exports = (pool) => {
         })
     })
 
-    router.get('/members/:id/edit/:userid', helpers.isLoggedIn, (req, res, next) => {
+    router.get('/members/:id/edit/:userid',  (req, res, next) => {
         const ids = [req.params.id, req.params.userid];
         let getMemberData = `select members.userid, members.role, CONCAT(users.firstname,' ', users.lastname) AS fullname from members 
         INNER JOIN users ON members.userid = users.userid WHERE members.projectid = $1 AND members.userid = $2`
@@ -334,7 +337,7 @@ module.exports = (pool) => {
         })
     })
 
-    router.post('/members/:id/edit/:userid', helpers.isLoggedIn, (req, res, next) => {
+    router.post('/members/:id/edit/:userid',  (req, res, next) => {
         const body = [req.body.position, req.params.id, req.params.userid];
         let updateMember = `UPDATE members SET role = $1 WHERE projectid = $2 AND userid = $3`
         pool.query(updateMember, body, (err) => {
@@ -343,7 +346,7 @@ module.exports = (pool) => {
         })
     })
 
-    router.get('/members/:id/delete/:userid', helpers.isLoggedIn, (req, res, next) => {
+    router.get('/members/:id/delete/:userid',  (req, res, next) => {
         const body = [req.params.id, req.params.userid];
         let deleteMember = `DELETE FROM members WHERE projectid = $1 AND userid = $2`
         pool.query(deleteMember, body, (err) => {
@@ -353,7 +356,7 @@ module.exports = (pool) => {
     })
 
     //ISSUES
-    router.get('/issues/:id', helpers.isLoggedIn, (req, res, next) => {
+    router.get('/issues/:id',  (req, res, next) => {
         const projectid = req.params.id;
         let getIssues = `select count(total) as totalData from (SELECT i1.*, users.userid, concat(users.firstname, ' ', users.lastname) as fullname, concat(u2.firstname, ' ', u2.lastname) author FROM issues i1 INNER JOIN users ON  users.userid = i1.assignee INNER JOIN users u2 ON i1.author = u2.userid  WHERE projectid = ${projectid}`
         let url = req.originalUrl;
@@ -421,7 +424,7 @@ module.exports = (pool) => {
         })
     })
 
-    router.post('/issues/:id', helpers.isLoggedIn, (req, res, next) => {
+    router.post('/issues/:id',  (req, res, next) => {
         const updateOptions = `UPDATE users SET issuesopt = $1 WHERE userid = $2`;
         const projectid = req.params.id;
         const data = [{
@@ -433,7 +436,7 @@ module.exports = (pool) => {
         })
     })
 
-    router.get('/issues/:id/add', helpers.isLoggedIn, (req, res, next) => {
+    router.get('/issues/:id/add',  (req, res, next) => {
         const projectid = req.params.id;
         const getMembers = `SELECT userid, concat(firstname,' ',lastname) as fullname FROM users WHERE isactive = true AND userid IN (select users.userid from members inner join users on users.userid = members.userid where members.projectid = $1)`
         pool.query(getMembers, [projectid], (err, members) => {
@@ -445,7 +448,7 @@ module.exports = (pool) => {
         })
     })
 
-    router.post('/issues/:id/add', helpers.isLoggedIn, (req, res, next) => {
+    router.post('/issues/:id/add',  (req, res, next) => {
         const projectid = req.params.id;
         const authorid = req.session.user.userid;
         const {
@@ -484,7 +487,7 @@ module.exports = (pool) => {
 
     });
 
-    router.get('/issues/:id/edit/:issueid', helpers.isLoggedIn, (req, res, next) => {
+    router.get('/issues/:id/edit/:issueid',  (req, res, next) => {
         const projectid = req.params.id;
         const issuesid = req.params.issueid;
         const getIssue = 'SELECT * FROM issues WHERE issueid = $1 AND projectid = $2'
@@ -508,7 +511,7 @@ module.exports = (pool) => {
         })
     })
 
-    router.post('/issues/:id/edit/:issueid', helpers.isLoggedIn, (req, res, next) => {
+    router.post('/issues/:id/edit/:issueid',  (req, res, next) => {
         const issueid = req.params.issueid;
         const projectid = req.params.id;
         const userid = req.session.user.userid;
@@ -557,7 +560,7 @@ module.exports = (pool) => {
         }
     })
 
-    router.get('/issues/:id/delete/:issueid', helpers.isLoggedIn, (req, res, next) => {
+    router.get('/issues/:id/delete/:issueid',  (req, res, next) => {
         const issueid = req.params.issueid;
         const projectid = req.params.id;
         const deleteIssues = `DELETE FROM issues WHERE issueid = $1`;

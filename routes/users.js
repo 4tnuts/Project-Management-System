@@ -9,7 +9,7 @@ router.use(bodyParser.urlencoded({
 router.use(bodyParser.json());
 
 module.exports = (pool) => {
-  router.get('/', helpers.isLoggedIn, (req, res, next) => {
+  router.get('/',  helpers.isAdmin, (req, res, next) => {
     let countDataUser = 'SELECT count(*) as total FROM users'
     let params = [];
     const currentPage = req.query.page || 1;
@@ -62,12 +62,13 @@ module.exports = (pool) => {
       pool.query(getDataUser, (err, result) => {
         if (err) return console.error(err);
         const getOptions = 'SELECT options from users WHERE userid = $1'
-        const id = [req.session.user.userid];
-        pool.query(getOptions, id, (err, data) => {
+        const {userid  : id, isadmin} = req.session.user;
+        pool.query(getOptions, [id], (err, data) => {
           res.render('users/dashboard', result = {
             users: result.rows,
             options : data.rows[0].options,
             query: req.query,
+            isadmin,
             totalPages,
             currentPage,
             url
@@ -77,7 +78,7 @@ module.exports = (pool) => {
     })
   });
 
-  router.post('/', helpers.isLoggedIn, (req, res, next) => {
+  router.post('/',  helpers.isAdmin, (req, res, next) => {
     const updateOptions = `UPDATE users SET options = $1 WHERE userid = $2`;
     const data = [{
       ...req.body
@@ -88,13 +89,13 @@ module.exports = (pool) => {
     })
   });
 
-  router.get('/add', helpers.isLoggedIn, (req, res, err) => {
+  router.get('/add',  helpers.isAdmin, (req, res, err) => {
     res.render('users/add',{
       info : req.flash('toast')
     });
   });
 
-  router.post('/add', helpers.isLoggedIn, (req, res, next) => {
+  router.post('/add',  helpers.isAdmin, (req, res, next) => {
     let insertQuery = 'INSERT INTO users(email, password, firstname, lastname, isfulltime, position, isactive, isadmin, options) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)';
     let body = [req.body.email, req.body.password, req.body.firstname, req.body.lastname, req.body.isfulltime, req.body.position, true, false, {
       cpid: true,
@@ -104,14 +105,14 @@ module.exports = (pool) => {
       cptypeofjob: true,
       cpstatus: true
     }];
-    pool.query(insertQuery, helpers.isLoggedIn, body, (err) => {
+    pool.query(insertQuery,  body, (err) => {
       if (err) return console.error(err);
       req.flash('toast', 'Berhasil tambahkan user')
       res.redirect('/users/add');
     });
   });
 
-  router.get('/edit/:id', helpers.isLoggedIn, (req, res, next) => {
+  router.get('/edit/:id',  helpers.isAdmin, (req, res, next) => {
     const id = [req.params.id];
     let getUserData = 'SELECT userid, email, password, firstname, lastname, isfulltime, position FROM users WHERE userid=$1'
     pool.query(getUserData, id, (err, result) => {
@@ -122,7 +123,7 @@ module.exports = (pool) => {
     })
   })
 
-  router.post('/edit/:id', helpers.isLoggedIn, (req, res, next) => {
+  router.post('/edit/:id',  helpers.isAdmin, (req, res, next) => {
     let queryUpdate = 'UPDATE users SET email = $1, password = $2, firstname = $3, lastname = $4, isfulltime = $5, position = $6 WHERE userid = $7';
     let body = [req.body.email, req.body.password, req.body.firstname, req.body.lastname, req.body.isfulltime, req.body.position, req.params.id];
     pool.query(queryUpdate, body, (err) => {
@@ -131,7 +132,7 @@ module.exports = (pool) => {
     })
   })
 
-  router.get('/activation/:id/:active', helpers.isLoggedIn,(req, res, next) => {
+  router.get('/activation/:id/:active',  helpers.isAdmin, (req, res, next) => {
     let deleteQuery = 'UPDATE users SET isactive = ';
     if (req.params.active == 'true') {
       deleteQuery += 'true';

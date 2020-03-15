@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const router = express.Router();
 
 module.exports = (pool) => {
-    router.get('/', helpers.isLoggedIn, (req, res, next) => {
+    router.get('/',  (req, res, next) => {
         const selectQuery = 'SELECT * FROM users WHERE userid = $1';
         const id = [req.session.user.userid];
         pool.query(selectQuery, id, (err, result) => {
@@ -15,7 +15,7 @@ module.exports = (pool) => {
         })
     });
 
-    router.post('/', helpers.isLoggedIn, (req, res, next) => {
+    router.post('/',  (req, res, next) => {
         let password = req.body.password;
         let data = [req.body.email, req.body.position, req.body.isfulltime, req.session.user.userid];
         let updateQuery = 'UPDATE users SET email=$1, position=$2, isfulltime=$3'

@@ -24,6 +24,9 @@ module.exports = (pool) => {
       if (result.rows[0] !== undefined) {
         const password = result.rows[0].password;
         bcrypt.compare(input.password, password, (err, deHashed) => {
+          console.log("Password yang di input " + input.password)
+          console.log("password yang ada setelah login " + password)
+          console.log("INI PASSWORD YANG DI DEHASHED " + deHashed)
           if (err) return console.error(err);
           if (deHashed && result.rows[0].isactive) {
             dataSession.user = result.rows[0];

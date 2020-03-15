@@ -15,6 +15,7 @@ const pool = new Pool({
   port : 5432
 })
 
+const helpers = require('./helpers/util.js')
 console.log('Connected to the database');
 
 const indexRouter = require('./routes/index')(pool);
@@ -36,12 +37,13 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(flash());
 app.use(session({
-secret : '4d4d3hm@uT@u4Ja',
-resave : false,
-saveUninitialized : true
+  secret : '4d4d3hm@uT@u4Ja',
+  resave : false,
+  saveUninitialized : true
 }));
 
 app.use('/', indexRouter);
+app.use(helpers.isLoggedIn); 
 app.use('/users', usersRouter);
 app.use('/profiles', profilesRouter);
 app.use('/projects', projectsRouter);

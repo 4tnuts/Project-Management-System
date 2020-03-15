@@ -6,10 +6,11 @@ helpers = {
         res.redirect('/');
     },
     isAdmin : (req, res, next) => {
-        if(req.session.user.isAdmin == 'Admin'){
+        console.log(req.session.user)
+        if(req.session.user.isadmin){
          return next();   
         }
-        res.redirect()
+        res.redirect('/projects')
     }
 }
 
