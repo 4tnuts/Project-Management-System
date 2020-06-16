@@ -535,7 +535,7 @@ module.exports = (pool) => {
             let fileName = file.name.toLowerCase().replace("", Date.now()).split(' ').join('-');
             file.mv(path.join(__dirname, "..", 'public', "upload", fileName), function (err) {
                 if (err) throw err;
-                issuesData[9] = `/upload/${fileName}`;
+                issueData[8] = `/upload/${fileName}`;
                 pool.query(updateIssue, issueData, (err) => {
                     if (err) throw err;
                     const recordActivity = `INSERT INTO activity (projectid, time, title, description, author, issueid) VALUES($1, now(), $2, $3, $4, $5)`
