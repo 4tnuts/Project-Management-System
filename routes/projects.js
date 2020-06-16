@@ -212,7 +212,6 @@ module.exports = (pool) => {
         const getDate = `select distinct to_char(time, 'DD-MM-YYYY') as date from activity where projectid = $1`;
         pool.query(getDate, [projectid], (err, dates) => {
             if (err) throw err;
-            console.log(dates.rows);
             pool.query(getActivity, [projectid], (err, activities) => {
                 if (err) throw err;
                 res.render('overview/activity', {
@@ -569,10 +568,6 @@ module.exports = (pool) => {
             res.redirect(`/projects/issues/${projectid}`)
         })
     })
-
-
-
-
 
     return router;
 }
